@@ -4,9 +4,9 @@ import { Injectable } from '@nestjs/common';
 export class WafflesService {
   //-----------------------waffles from memory --------------------//
   waffles = [
-    {id:0, name : 'Waffle Sergio' , description : "1 bocha de helado sabor Crema americana , 1 bocha de helado sabor vainilla, topping de chispitas de chocolate, salsa de frutilla", imgUrl : null , price : 1500},
-    {id:1, name : 'Waffle Emiliano' , description : "2 bochas de helado sabor DDL granizado, toppins de frutilla, salsa de DDL", imgUrl : null , price : 3000},
-    {id:2, name : 'Waffle Maria' , description : "1 bocha de helado sabor Crema Americana, 1 bocha de helado sabor Chocolate, toppins de almendra, salsa dulce de leche", imgUrl : null , price : 1500},
+    {id:0, name : 'Waffle Sergio' , description : "1 bocha de helado sabor Crema americana , 1 bocha de helado sabor vainilla, topping de chispitas de chocolate, salsa de frutilla", imgUrl : "https://i.ibb.co/pb1jSL7/w1.jpg" , price : 1500},
+    {id:1, name : 'Waffle Emiliano' , description : "2 bochas de helado sabor DDL granizado, toppins de frutilla, salsa de DDL", imgUrl : 'https://i.ibb.co/TbYgZx3/w2.jpg' , price : 3000},
+    {id:2, name : 'Waffle Maria' , description : "1 bocha de helado sabor Crema Americana, 1 bocha de helado sabor Chocolate, toppins de almendra, salsa dulce de leche", imgUrl : 'https://i.ibb.co/tHSYb5G/w3.jpg' , price : 1500},
     {id:3, name : 'Waffle3' , description : "1 bochas de helado, toppins de sandia , salsa de dulce de leche", imgUrl : null , price : 150},
     {id:4, name : 'Waffle4' , description : "1 bochas de helado, toppins de chocolate , salsa de dulce de leche", imgUrl : null , price : 1500},
     {id:5, name : 'Waffle5' , description : "1 bochas de helado, toppins de chocolate , salsa de dulce de leche", imgUrl : null , price : 1500},
@@ -14,6 +14,7 @@ export class WafflesService {
     {id:7, name : 'Waffle7' , description : "1 bochas de helado, toppins de chocolate , salsa de dulce de leche", imgUrl : null , price : 1500},
     {id:8, name : 'Waffle8' , description : "1 bochas de helado, toppins de chocolate , salsa de dulce de leche", imgUrl : null , price : 1500},
   ]
+  
 
   public getWaffles(): any{
     return this.waffles
@@ -58,6 +59,10 @@ export class WafflesService {
     return waffle;
   }
 
+  public getImage(id:string):any{
+
+  }
+  
 
 
 }

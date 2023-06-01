@@ -1,5 +1,7 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Delete} from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Delete, Res} from '@nestjs/common';
 import { WafflesService } from './waffles.service';
+import path from 'path';
+import { Response } from 'express';
 
 @Controller('api')
 export class WafflesController {
@@ -22,14 +24,14 @@ export class WafflesController {
   public getWafflesByID(@Param('id', ParseIntPipe)id:number):any{
     return this.wafflesService.getWafflesByID(id);
   }
+  @Get('/images/:imageName')
+  public getImage(@Param('imageName') imageName: string, @Res() res: Response) {
+    const imagePath = path.resolve(__dirname, '..', 'uploads', imageName);
+    return res.sendFile(imagePath);
+  }
+
+
+
   
-
-
-
-
-
-
-
-
-
-}
+  }
+  
