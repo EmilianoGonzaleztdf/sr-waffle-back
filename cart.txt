@@ -1,4 +1,2 @@
 
-0,Waffle Emi,1 bocha de helado sabor Crema americana , 1 bocha de helado sabor vainilla, topping de chispitas de chocolate, salsa de frutilla,1500,1
-0,Waffle Emi,1 bocha de helado sabor Crema americana , 1 bocha de helado sabor vainilla, topping de chispitas de chocolate, salsa de frutilla,1500,1
-0,Waffle Emi,1 bocha de helado sabor Crema americana , 1 bocha de helado sabor vainilla, topping de chispitas de chocolate, salsa de frutilla,1500,1
+0,Waffle Sergio,1 bocha de helado sabor Crema americana , 1 bocha de helado sabor vainilla, topping de chispitas de chocolate, salsa de frutilla,https://i.ibb.co/pb1jSL7/w1.jpg,1500,1

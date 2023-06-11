@@ -23,7 +23,7 @@ export class CustomerCartService {
       let id = parseInt(data[i][0]);
       let price = parseInt(data[i][3]);
       let quantity = parseInt(data[i][4]);
-      let order = new CustomerCart(id, data[i][1], data[i][2], price, quantity);
+      let order = new CustomerCart(id, data[i][1], data[i][2],data[i][3],price, quantity);
       data1.push(order);
     }
   }
@@ -36,9 +36,9 @@ export class CustomerCartService {
     let price = parseInt(body.price);
     let quantity = parseInt(body.quantity);
 
-    let order = new CustomerCart(id,body.name,body.description,price,quantity);
+    let order = new CustomerCart(id,body.name,body.description,body.imgUrl,price,quantity);
     {
-      fs.appendFileSync('cart.txt',`\n${order.getId()},${order.getName()},${order.getDescription()},${order.getPrice()},${order.getQuantity()}`,);
+      fs.appendFileSync('cart.txt',`\n${order.getId()},${order.getName()},${order.getDescription()},${order.getImgUrl()},${order.getPrice()},${order.getQuantity()}`,);
       this.order.push(order);
       return 'OK';
     }
