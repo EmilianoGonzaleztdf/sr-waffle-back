@@ -35,7 +35,6 @@ export class CustomerCartService {
     let id = parseInt(body.id);
     let price = parseInt(body.price);
     let quantity = parseInt(body.quantity);
-
     let order = new CustomerCart(id,body.name,body.description,body.imgUrl,price,quantity);
     {
       fs.appendFileSync('cart.txt',`\n${order.getId()},${order.getName()},${order.getDescription()},${order.getImgUrl()},${order.getPrice()},${order.getQuantity()}`,);

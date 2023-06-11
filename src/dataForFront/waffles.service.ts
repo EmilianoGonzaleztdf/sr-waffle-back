@@ -58,10 +58,6 @@ export class WafflesService {
     waffleAux.push(waffle);
     return waffle;
   }
-
-  public getImage(id:string):any{
-
-  }
   
 
 

@@ -22,5 +22,4 @@ export class CustomerCartController {
   public finishOrder():any{
     this.customerCartService.finishOrder();
   }
-
 }

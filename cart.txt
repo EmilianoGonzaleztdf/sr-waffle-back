@@ -1,2 +1,3 @@
 
 0,Waffle Sergio,1 bocha de helado sabor Crema americana , 1 bocha de helado sabor vainilla, topping de chispitas de chocolate, salsa de frutilla,https://i.ibb.co/pb1jSL7/w1.jpg,1500,1
+2,Waffle Maria,1 bocha de helado sabor Crema Americana, 1 bocha de helado sabor Chocolate, toppins de almendra, salsa dulce de leche,https://i.ibb.co/tHSYb5G/w3.jpg,1500,1
