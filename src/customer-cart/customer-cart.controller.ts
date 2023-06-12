@@ -22,4 +22,8 @@ export class CustomerCartController {
   public finishOrder():any{
     this.customerCartService.finishOrder();
   }
+  @Get('viewOrder')
+  public viewOrder():any{
+    return this.customerCartService.viewOrder();
+  }
 }

@@ -1,3 +1,7 @@
 
 0,Waffle Sergio,1 bocha de helado sabor Crema americana , 1 bocha de helado sabor vainilla, topping de chispitas de chocolate, salsa de frutilla,https://i.ibb.co/pb1jSL7/w1.jpg,1500,1
-2,Waffle Maria,1 bocha de helado sabor Crema Americana, 1 bocha de helado sabor Chocolate, toppins de almendra, salsa dulce de leche,https://i.ibb.co/tHSYb5G/w3.jpg,1500,1
+1,Waffle Emiliano,2 bochas de helado sabor DDL granizado, toppins de frutilla, salsa de DDL,https://i.ibb.co/TbYgZx3/w2.jpg,3000,1
+6,Waffle6,1 bochas de helado, toppins de chocolate , salsa de dulce de leche,https://i.ibb.co/pb1jSL7/w1.jpg,1500,1
+1,Waffle Emiliano,2 bochas de helado sabor DDL granizado, toppins de frutilla, salsa de DDL,https://i.ibb.co/TbYgZx3/w2.jpg,3000,1
+7,Waffle7,1 bochas de helado, toppins de chocolate , salsa de dulce de leche,https://i.ibb.co/pb1jSL7/w1.jpg,1500,1
+1,Waffle Emiliano,2 bochas de helado sabor DDL granizado, toppins de frutilla, salsa de DDL,https://i.ibb.co/TbYgZx3/w2.jpg,3000,1
