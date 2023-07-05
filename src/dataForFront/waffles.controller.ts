@@ -30,8 +30,5 @@ export class WafflesController {
     return res.sendFile(imagePath);
   }
 
-
-
-  
   }
   

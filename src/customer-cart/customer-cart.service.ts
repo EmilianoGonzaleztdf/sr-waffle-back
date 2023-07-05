@@ -25,22 +25,6 @@ export class CustomerCartService implements OnModuleInit{
       data1.push(order);  
   }
 }
-  /*private loadOrder(): void {
-    let archive = fs.readFileSync('cart.txt', 'utf-8');
-    let data = archive
-      .split('\n')
-      .map((p) => p.replace('\r', ''))
-      .map((p) => p.split(','));
-
-    let data1 = [];
-
-    for (let i = 0; i < data.length; i++) {
-      let id = parseInt(data[i][0]);
-      let price = parseInt(data[i][3]);
-      let quantity = parseInt(data[i][4]);
-      let order = new CustomerCart(id, data[i][1], data[i][2],data[i][3],price, quantity);
-      data1.push(order);
-    }*/
   
   onModuleInit(): any {
     this.deleteOrder();
