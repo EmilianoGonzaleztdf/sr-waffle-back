@@ -1,17 +1,20 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { WafflesController } from './dataForFront/waffles.controller';
-import { WafflesService } from './dataForFront/waffles.service';
-import { CustomerCartController } from './customer-cart/customer-cart.controller';
-import { CustomerCartService } from './customer-cart/customer-cart.service';
-import { DashboardController } from './dashboard/dashboard.controller';
-import { DashboardService } from './dashboard/dashboard.service';
-
+import { ProductsController } from './products/products.controller';
+import { ProductsService } from './products/products.service';
+import { UsersController } from './users/users.controller';
+import { UsersService } from './users/users.service';
+import { SalesController } from './sales/sales.controller';
+import { SalesService } from './sales/sales.service';
+import { StockController } from './stock/stock.controller';
+import { StockService } from './stock/stock.service';
+import { CartController } from './cart/cart.controller';
+import { CartService } from './cart/cart.service';
 
 @Module({
   imports: [],
-  controllers: [AppController, WafflesController, CustomerCartController, DashboardController],
-  providers: [AppService, WafflesService, CustomerCartService, DashboardService],
+  controllers: [AppController, ProductsController, UsersController, SalesController, StockController, CartController],
+  providers: [AppService, ProductsService, UsersService, SalesService, StockService, CartService],
 })
 export class AppModule {}
