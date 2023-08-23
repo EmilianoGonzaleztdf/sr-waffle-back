@@ -17,4 +17,8 @@ export class CartController {
   public deleteCartOrder(): any{
     return this.cartController.deleteCartOrder();
   }
+  @Get('viewOrder')
+  public viewOrder():any{
+    return this.cartController.viewOrder();
+  }
 }

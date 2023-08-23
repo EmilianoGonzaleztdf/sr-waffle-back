@@ -21,4 +21,9 @@ public addCartOrder(body): string {
 public deleteCartOrder(): any {
   return this.order.splice(0,this.order.length)
 }
+public viewOrder():any{
+  let length = 0;
+  length = this.order.length
+  return length
+}
 }
