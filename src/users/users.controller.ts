@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Delete,Put} from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Delete,Put, Query} from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -9,17 +9,13 @@ export class UsersController {
   public getUsers(): any {
     return this.usersService.getUsers();
   }
+  @Get('search/:keyword')
+  searchUsers(@Param('keyword') keyword: string): any[] {
+    return this.usersService.searchUsersByKeyword(keyword);
+  }
   @Post('/createUser')
   public postCreateUser(@Body()body): string {
     return this.usersService.postCreateUser(body);
-  }
-  @Get('/find/:id')
-  public getFindUserID(@Param('id',ParseIntPipe)id:number):any{
-    return this.usersService.getFindUserID(id);
-  }
-  @Get('/findName/:name')
-  public getFindUserName(@Param('name')name:string):any{
-    return this.usersService.getFindUserName(name);
   }
   @Delete('/delete/:id')
   public getDeleteUsertID(@Param('id',ParseIntPipe)id:number):any{
@@ -30,3 +26,4 @@ export class UsersController {
     return this.usersService.updateUserByID(id, body);
   }
 }
+
