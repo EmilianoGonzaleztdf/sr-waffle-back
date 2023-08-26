@@ -4,27 +4,82 @@ import { Injectable } from '@nestjs/common';
 export class UsersService {
   //- usuarios en memoria -//
   users = [
-    {id:0, name : 'Javier' , lastName : 'Chavarria' , dni : "1211111", email : 'javier@gmail.com', user : "javier.chavarria" , password : "1234", rol : "admin" , status : "active"},
-    {id:1, name : 'Emiliano' , lastName : 'Gonzalez' , dni : "1222222", email : 'emiliano@gmail.com', user : "emiliano.gonzalez" , password : "1234", rol : "cocina", status : "disabled"},
-    {id:2, name : 'Laura' , lastName : 'Zabala' , dni : "3333333", email : 'laura@gmail.com', user : "laura.zabala" , password : "1234", rol : "admin", status : "active"},
-    {id:3, name : 'Sergio' , lastName : 'Sanchez' , dni : "4444444", email : 'sergio@gmail.com', user : "sergio.sanchez" , password : "1234", rol : "cajero" , status : "disabled"},
-    {id:4, name : 'Fernando' , lastName : 'Frias' , dni : "5555555", email : 'fernando@gmail.com', user : "fernando.frias" , password : "1234", rol : "cocina", status : "active"},
-  ]
+    {
+      id: 0,
+      name: 'Javier',
+      lastName: 'Chavarria',
+      dni: '1211111',
+      email: 'javier@gmail.com',
+      user: 'javier.chavarria',
+      password: '1234',
+      rol: 'admin',
+      status: 'active',
+    },
+    {
+      id: 1,
+      name: 'Emiliano',
+      lastName: 'Gonzalez',
+      dni: '1222222',
+      email: 'emiliano@gmail.com',
+      user: 'emiliano.gonzalez',
+      password: '1234',
+      rol: 'cocina',
+      status: 'disabled',
+    },
+    {
+      id: 2,
+      name: 'Laura',
+      lastName: 'Zabala',
+      dni: '3333333',
+      email: 'laura@gmail.com',
+      user: 'laura.zabala',
+      password: '1234',
+      rol: 'admin',
+      status: 'active',
+    },
+    {
+      id: 3,
+      name: 'Sergio',
+      lastName: 'Sanchez',
+      dni: '4444444',
+      email: 'sergio@gmail.com',
+      user: 'sergio.sanchez',
+      password: '1234',
+      rol: 'cajero',
+      status: 'disabled',
+    },
+    {
+      id: 4,
+      name: 'Fernando',
+      lastName: 'Frias',
+      dni: '5555555',
+      email: 'fernando@gmail.com',
+      user: 'fernando.frias',
+      password: '1234',
+      rol: 'cocina',
+      status: 'active',
+    },
+  ];
 
   public getUsers(): any {
     return this.users;
   }
   public searchUsersByKeyword(keyword: string): any[] {
+    if (!keyword) {
+      return this.users; // Devuelve todos los usuarios si el keyword está vacío
+    }
+  
     keyword = keyword.toLowerCase();
-    return this.users.filter(user =>
-      user.name.toLowerCase().includes(keyword) ||
-      user.lastName.toLowerCase().includes(keyword) ||
-      user.dni.toLowerCase().includes(keyword) ||
-      user.email.toLowerCase().includes(keyword) ||
-      user.user.toLowerCase().includes(keyword) ||
-      user.rol.toLowerCase().includes(keyword)
+    return this.users.filter(
+      (user) =>
+        user.name.toLowerCase().includes(keyword) ||
+        user.lastName.toLowerCase().includes(keyword) ||
+        user.dni.toLowerCase().includes(keyword) ||
+        user.email.toLowerCase().includes(keyword) ||
+        user.user.toLowerCase().includes(keyword) ||
+        user.rol.toLowerCase().includes(keyword),
     );
-  }
+  };
   public postCreateUser(body): string {
     this.users.push(body);
     return `The user was created with the following attributes:
@@ -51,7 +106,7 @@ export class UsersService {
     if (userExists) {
       this.users.splice(userPosition, 1);
       return {
-        msj: `user ${id } was removed`,
+        msj: `user ${id} was removed`,
         producto: this.users[userPosition],
       };
     } else {
@@ -61,10 +116,10 @@ export class UsersService {
 
   public updateUserByID(id: number, body: any): any {
     const userIndex = this.users.findIndex((p) => p.id === id);
-  
+
     if (userIndex !== -1) {
       const userToUpdate = this.users[userIndex];
-  
+
       if (body.name !== undefined) {
         userToUpdate.name = body.name;
       }
@@ -91,11 +146,4 @@ export class UsersService {
       return { msj: `User ID not found ${id}` };
     }
   }
-
-
-
-
-
-
-  }
-
+}

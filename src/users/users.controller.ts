@@ -9,10 +9,15 @@ export class UsersController {
   public getUsers(): any {
     return this.usersService.getUsers();
   }
+
   @Get('search/:keyword')
   searchUsers(@Param('keyword') keyword: string): any[] {
+    if (keyword === "") { // Usa === para comparar
+      return this.usersService.getUsers();
+    }
     return this.usersService.searchUsersByKeyword(keyword);
   }
+
   @Post('/createUser')
   public postCreateUser(@Body()body): string {
     return this.usersService.postCreateUser(body);
