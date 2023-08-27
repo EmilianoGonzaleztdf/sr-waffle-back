@@ -21,4 +21,8 @@ export class CartController {
   public viewOrder():any{
     return this.cartController.viewOrder();
   }
+  @Get('total')
+  getTotal(): number {
+    return this.cartController.calculateTotal();
+  }
 }
