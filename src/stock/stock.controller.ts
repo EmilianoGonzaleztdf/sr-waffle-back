@@ -9,22 +9,17 @@ export class StockController {
   public getStock(): any {
     return this.stockController.getStock();
   }
-
+  @Get('search/:keyword')
+  searchUsers(@Param('keyword') keyword: string): any[] {
+    if (keyword === "") { // Usa === para comparar
+      return this.stockController.getStock();
+    }
+    return this.stockController.searchStockByKeyword(keyword);
+  }
   @Post('/addItem')
   public postCreateStockItem(@Body() body): string {
     return this.stockController.postCreateStockItem(body);
   }
-
-  @Get('/find/:id')
-  public getFindStockItemByID(@Param('id', ParseIntPipe) id: number): any {
-    return this.stockController.getFindStockItemByID(id);
-  }
-
-  @Get('/findName/:name')
-  public getFindStockItemByName(@Param('name') name: string): any {
-    return this.stockController.getFindStockItemByName(name);
-  }
-
   @Get('/delete/:id')
   public getDeleteStockItemByID(@Param('id', ParseIntPipe) id: number): any {
     return this.stockController.getDeleteStockItemByID(id);
