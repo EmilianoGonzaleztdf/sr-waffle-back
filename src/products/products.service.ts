@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class ProductsService {
   //- productos en memoria -//
   products  = [
-    {id:0, name : 'Waffle Seeergio' , description : "1 bocha de helado sabor Crema americana , 1 bocha de helado sabor vainilla, topping de chispitas de chocolate, salsa de frutilla", imgUrl : "https://i.ibb.co/pb1jSL7/w1.jpg" , price : 1500},
+    {id:0, name : 'Waffle Sergio' , description : "1 bocha de helado sabor Crema americana , 1 bocha de helado sabor vainilla, topping de chispitas de chocolate, salsa de frutilla", imgUrl : "https://i.ibb.co/pb1jSL7/w1.jpg" , price : 1500},
     {id:1, name : 'Waffle Emiliano' , description : "2 bochas de helado sabor DDL granizado, toppins de frutilla, salsa de DDL", imgUrl : 'https://i.ibb.co/TbYgZx3/w2.jpg' , price : 3000},
     {id:2, name : 'Waffle Maria' , description : "1 bocha de helado sabor Crema Americana, 1 bocha de helado sabor Chocolate, toppins de almendra, salsa dulce de leche", imgUrl : 'https://i.ibb.co/tHSYb5G/w3.jpg' , price : 1500},
     {id:3, name : 'Waffle3' , description : "1 bochas de helado, toppins de sandia , salsa de dulce de leche", imgUrl : "https://i.ibb.co/pb1jSL7/w1.jpg" , price : 150},
@@ -18,6 +18,18 @@ export class ProductsService {
   public getProducts(): any {
     return this.products;
   }
+  public searchProductsByKeyword(keyword: string): any[] {
+    if (!keyword) {
+      return this.products; // Devuelve todos los usuarios si el keyword está vacío
+    }
+  
+    keyword = keyword.toLowerCase();
+    return this.products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(keyword) ||
+        product.description.toLowerCase().includes(keyword)
+    );
+  };
   public postCreateProduct(body): string {
     this.products.push(body);
     return `The producto was created with the following attributes:
@@ -27,18 +39,6 @@ export class ProductsService {
     imgUrl: ${body.imgUrl}
     price: ${body.price}
     `;
-  }
-  public getFindProductID(id: number): any {
-    let product = this.products.find((p) => p.id === id);
-    let productAux = [];
-    productAux.push(product);
-    return productAux;
-  }
-  public getFindProductName(name: string): any {
-    let product = this.products.find((p) => p.name === name);
-    let productAux = [];
-    productAux.push(product);
-    return productAux;
   }
   public getDeleteProductID(id: number): any {
     let productExists = false;

@@ -9,17 +9,16 @@ export class ProductsController {
   public getProducts(): any {
     return this.productsService.getProducts();
   }
+  @Get('search/:keyword')
+  searchUsers(@Param('keyword') keyword: string): any[] {
+    if (keyword === "") { // Usa === para comparar
+      return this.productsService.getProducts();
+    }
+    return this.productsService.searchProductsByKeyword(keyword);
+  }
   @Post('/createProduct')
   public postCreateProduct(@Body()body): string {
     return this.productsService.postCreateProduct(body);
-  }
-  @Get('/find/:id')
-  public getFindProductID(@Param('id',ParseIntPipe)id:number):any{
-    return this.productsService.getFindProductID(id);
-  }
-  @Get('/findName/:name')
-  public getFindProductName(@Param('name')name:string):any{
-    return this.productsService.getFindProductName(name);
   }
   @Delete('/delete/:id')
   public getDeleteProductID(@Param('id',ParseIntPipe)id:number):any{
