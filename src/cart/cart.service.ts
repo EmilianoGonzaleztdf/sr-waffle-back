@@ -15,17 +15,17 @@ export class CartService {
 
     for (let i = 0; i < this.order.length; i++) {
       if (this.order[i].id == body.id) {
-        console.log("es igual");
         existe = true;
         posicion = i;
       };
     }
     
       if ( existe === true){
-        this.order[posicion].quantity += 1; 
-        console.log(this.order[posicion]);
-        console.log(this.order);
-
+        if(body.quantity == 1){
+        this.order[posicion].quantity += 1;
+      } else if (body.quantity == -1){
+        this.order[posicion].quantity -= 1;
+      } 
       }else{
 
         this.order.push(body);
@@ -56,4 +56,14 @@ export class CartService {
     }, 0);
     return total;
   }
+
+  public calcular(): number {
+    let total = 0;
+    this.order.forEach(elemento => total + elemento.quantity)
+
+    return total;
+  }
+
 }
+
+

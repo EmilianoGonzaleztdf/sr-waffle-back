@@ -25,4 +25,9 @@ export class CartController {
   getTotal(): number {
     return this.cartController.calculateTotal();
   }
+
+  @Get('ordenTotal')
+  getOrdenTotal(): number {
+    return this.cartController.calcular();
+  }
 }
