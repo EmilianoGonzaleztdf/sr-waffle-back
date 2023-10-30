@@ -14,6 +14,15 @@ import { CartController } from './old/cart-copy/cart.controller';
 import { CartService } from './old/cart-copy/cart.service';
 */
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
+import { RoleModule } from './role/role.module';
+import { PersonModule } from './person/person.module';
+import { UserModule } from './user/user.module';
+import { OrderModule } from './order/order.module';
+import { StatusModule } from './status/status.module';
+import { SaleModule } from './sale/sale.module';
+import { HistorySaleModule } from './history_sale/history_sale.module';
 
 
 @Module({
@@ -26,7 +35,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     database: 'tp_anual',
     entities: [__dirname + '/**/**/**.entity{.ts,.js}'],
     synchronize: true, //modo desarrollador.
-  }),],
+  }), CategoryModule, ProductModule, RoleModule, PersonModule, UserModule, OrderModule, StatusModule, SaleModule, HistorySaleModule,],
   controllers: [AppController, /*ProductsController, UsersController, SalesController, StockController, CartController*/],
   providers: [AppService, /*ProductsService, UsersService, SalesService, StockService, CartService*/],
 })
