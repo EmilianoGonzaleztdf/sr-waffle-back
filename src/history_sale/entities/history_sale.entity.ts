@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Product } from "src/product/entities/product.entity";
+import { Sale } from "src/sale/entities/sale.entity";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'history_sale'})
 export class HistorySale {
@@ -9,6 +11,23 @@ export class HistorySale {
 
     @Column()
     price_of_date_of_sale : number;
+
+    // RELACIONES
+
+    @OneToOne(()=>Sale, sale=>sale.historySale)
+    @JoinColumn({name : "fk_id_sale"})
+    sale:Sale;
+
+    
+    @OneToOne(()=>Product, product=>product.historySale)
+    @JoinColumn({name : 'fk_id_product'})
+    product:Product;
+    /*
+    En product:
+
+    @OneToOne(()=>HistorySale, historySale=>historySale.product)
+    historySale:HistorySale;
+    */
 
     // CONSTRUCTOR
 

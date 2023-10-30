@@ -1,3 +1,4 @@
+import { Order } from "src/order/entities/order.entity";
 import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name : 'status'})
@@ -7,6 +8,9 @@ export class Status {
 
   @Column({ unique: true })
   description: string;
+
+  @OneToMany(()=> Order , order => order.status)
+  orders : Order[];
 
 constructor(description : string){
   this.description = description;

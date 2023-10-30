@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'person'})
 export class Person {
@@ -15,6 +16,12 @@ export class Person {
     
     @Column()
     lastname: string;
+
+    // RELACIONES
+
+    @OneToOne(()=>User, user=>user.person)
+    @JoinColumn({name : "fk_id_user"})
+    user:User;
 
     // CONSTRUCTOR
 

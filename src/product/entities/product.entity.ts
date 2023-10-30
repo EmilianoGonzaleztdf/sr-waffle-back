@@ -1,11 +1,26 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Category } from 'src/category/entities/category.entity';
+import { HistorySale } from 'src/history_sale/entities/history_sale.entity';
+import { Order } from 'src/order/entities/order.entity';
+
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'product' })
 export class Product {
   @PrimaryGeneratedColumn()
   id_product: number;
 
-  @PrimaryColumn({ unique: true })
+  @Column({ unique: true })
   bar_code: number;
 
   @Column()
@@ -19,6 +34,21 @@ export class Product {
 
   @Column()
   price: number;
+  // relacion una categoria tiene muchos productos
+  @ManyToOne(() => Category, (category) => category.products)
+  @JoinColumn({ name: 'fk_id_category' })
+  category: Category;
+
+  @OneToOne(() => HistorySale, (historySale) => historySale.product)
+  historySale: HistorySale;
+
+  @ManyToMany(() => Order, (order) => order.products)
+  @JoinTable({
+    name: 'order_product',
+    joinColumn: { name: 'fk_id_order' },
+    inverseJoinColumn: { name: 'fk_id_product' },
+  })
+  orders: Order[];
 
   constructor(
     bar_code: number,

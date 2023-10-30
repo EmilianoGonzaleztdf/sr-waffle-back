@@ -1,4 +1,7 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Person } from "src/person/entities/person.entity";
+import { Role } from "src/role/entities/role.entity";
+import { Sale } from "src/sale/entities/sale.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'user'})
 export class User {
@@ -18,6 +21,19 @@ export class User {
 
     @Column()
     status: string;
+
+
+    // RELACIONES
+
+    @ManyToOne(()=>Role, role=>role.users)
+    @JoinColumn({name : "fk_id_role"})
+    role:Role;
+
+    @OneToOne(()=>Person, person=>person.user)
+    person:Person;
+
+    @OneToMany(()=>Sale, sale=>sale.user)
+    sales:Sale[];
 
     // CONSTRUCTOR
     constructor(email : string, user : string, password : string, status : string) {
