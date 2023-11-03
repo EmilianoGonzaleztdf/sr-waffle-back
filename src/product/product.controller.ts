@@ -3,32 +3,34 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 
-@Controller('product')
+@Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
-  }
-
-  @Get()
-  findAll() {
+  @Get('/list')
+  async findAll() : Promise<CreateProductDto[]> {
     return this.productService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
-  }
-
+/*  @Get('search/:keyword')
+  async searchProductByKeyword(@Param('keyword') keyword : string) : Promise<CreateProductDto[]>{
+    if(keyword === ''){
+      return this.productService.findAll();
+    }
+    return this.productService.searchProductByKeyword(keyword);
+  } ;
+*/
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+  async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productService.update(+id, updateProductDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.productService.remove(+id);
   }
+  @Post()
+  async create(@Body() createProductDto: CreateProductDto) {
+    return this.productService.create(createProductDto);
+  }
+
 }

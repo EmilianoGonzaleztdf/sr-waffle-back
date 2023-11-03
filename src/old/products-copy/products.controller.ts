@@ -5,6 +5,11 @@ import { ProductsService } from './products.service';
 export class ProductsController {
   constructor(private productsService: ProductsService){}
 
+  @Post('/createProduct')
+  public postCreateProduct(@Body()body): string {
+    return this.productsService.postCreateProduct(body);
+  }
+  
   @Get('/list')
   public getProducts(): any {
     return this.productsService.getProducts();
@@ -16,10 +21,7 @@ export class ProductsController {
     }
     return this.productsService.searchProductsByKeyword(keyword);
   }
-  @Post('/createProduct')
-  public postCreateProduct(@Body()body): string {
-    return this.productsService.postCreateProduct(body);
-  }
+
   @Delete('/delete/:id')
   public getDeleteProductID(@Param('id',ParseIntPipe)id:number):any{
     return this.productsService.getDeleteProductID(id);

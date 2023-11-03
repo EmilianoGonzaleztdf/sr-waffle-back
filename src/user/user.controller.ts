@@ -12,9 +12,17 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  @Get('/list')
+  async findAll() : Promise<CreateUserDto[]> {
+    return await this.userService.findAll();
+  }
+
+  @Get('search/:keyword')
+  async searchUsers(@Param('keyword') keyword: string) : Promise<any[]> {
+    if (keyword === "") { // Usa === para comparar
+      return this.userService.findAll();
+    }
+    return this.userService.searchUsersByKeyword(keyword);
   }
 
   @Get(':id')
