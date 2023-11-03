@@ -21,7 +21,7 @@ export class Product {
   id_product: number;
 
   @Column({ unique: true })
-  bar_code: number;
+  bar_code: string;
 
   @Column()
   name: string;
@@ -51,7 +51,7 @@ export class Product {
   orders: Order[];
 
   constructor(
-    bar_code: number,
+    bar_code: string,
     name: string,
     description: string,
     imgURL: string,
@@ -68,7 +68,7 @@ export class Product {
   public getId(): number {
     return this.id_product;
   }
-  public getBar_Code(): number {
+  public getBar_Code(): string {
     return this.bar_code;
   }
   public getName(): string {
@@ -85,7 +85,7 @@ export class Product {
   }
 
   //set
-  public setBar_Code(bar_Code: number) {
+  public setBar_Code(bar_Code: string) {
     this.bar_code = bar_Code;
   }
   public setName(name: string) {

@@ -22,7 +22,6 @@ export class ProductsService {
     if (!keyword) {
       return this.products; // Devuelve todos los usuarios si el keyword está vacío
     }
-  
     keyword = keyword.toLowerCase();
     return this.products.filter(
       (product) =>

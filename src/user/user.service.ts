@@ -27,7 +27,7 @@ export class UserService {
     return await this.userRepository.find();
   }
 
-  async public searchUsersByKeyword(keyword: string) : Promise<any[]> {
+ /* async public searchUsersByKeyword(keyword: string) : Promise<any[]> {
     if (!keyword) {
       return await this.userRepository.find(); // Devuelve todos los usuarios si el keyword está vacío
     }
@@ -45,7 +45,7 @@ export class UserService {
         user.user.toLowerCase().includes(keyword) ||
         user.rol.toLowerCase().includes(keyword),
     );
-
+    }*/
   findOne(id: number) {
     return `This action returns a #${id} user`;
   }

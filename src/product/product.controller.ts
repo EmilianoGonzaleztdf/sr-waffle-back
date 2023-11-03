@@ -11,14 +11,14 @@ export class ProductController {
   async findAll() : Promise<CreateProductDto[]> {
     return this.productService.findAll();
   }
-/*  @Get('search/:keyword')
-  async searchProductByKeyword(@Param('keyword') keyword : string) : Promise<CreateProductDto[]>{
+  @Get('search/:keyword')
+  async searchProductsByKeyword(@Param('keyword') keyword : string) : Promise<CreateProductDto[]>{
     if(keyword === ''){
       return this.productService.findAll();
     }
-    return this.productService.searchProductByKeyword(keyword);
+    return this.productService.searchProductsByKeyword(keyword);
   } ;
-*/
+
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productService.update(+id, updateProductDto);
@@ -28,7 +28,7 @@ export class ProductController {
   async remove(@Param('id') id: string) {
     return this.productService.remove(+id);
   }
-  @Post()
+  @Post('/createProduct')
   async create(@Body() createProductDto: CreateProductDto) {
     return this.productService.create(createProductDto);
   }

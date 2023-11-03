@@ -17,13 +17,13 @@ export class UserController {
     return await this.userService.findAll();
   }
 
-  @Get('search/:keyword')
+  /*@Get('search/:keyword')
   async searchUsers(@Param('keyword') keyword: string) : Promise<any[]> {
     if (keyword === "") { // Usa === para comparar
       return this.userService.findAll();
     }
     return this.userService.searchUsersByKeyword(keyword);
-  }
+  }*/
 
   @Get(':id')
   findOne(@Param('id') id: string) {
