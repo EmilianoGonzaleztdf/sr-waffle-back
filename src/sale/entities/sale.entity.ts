@@ -1,4 +1,5 @@
 import { HistorySale } from "src/history_sale/entities/history_sale.entity";
+import { Order } from "src/order/entities/order.entity";
 import { User } from "src/user/entities/user.entity";
 import { Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -17,6 +18,10 @@ export class Sale {
 
     @OneToOne(()=>HistorySale, historySale=>historySale.sale)
     historySale:HistorySale;
+
+    @OneToOne(()=>Order, order=>order.sale)
+    @JoinColumn({name : "fk_id_order"})
+    order:Order;
 
     // CONSTRUCTOR
     constructor(){}

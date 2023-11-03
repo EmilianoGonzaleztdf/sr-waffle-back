@@ -1,4 +1,5 @@
 import { Product } from 'src/product/entities/product.entity';
+import { Sale } from 'src/sale/entities/sale.entity';
 import { Status } from 'src/status/entities/status.entity';
 import {
   Column,
@@ -8,6 +9,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -25,6 +27,9 @@ export class Order {
 
   @ManyToMany(() => Product, (product) => product.orders)
   products: Product[];
+
+  @OneToOne(()=>Sale, sale=>sale.order)
+  sale:Sale;
 
   constructor() {}
 }
