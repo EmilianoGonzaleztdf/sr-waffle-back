@@ -11,6 +11,7 @@ export class ProductController {
   async findAll() : Promise<CreateProductDto[]> {
     return this.productService.findAll();
   }
+  
   @Get('search/:keyword')
   async searchProductsByKeyword(@Param('keyword') keyword : string) : Promise<CreateProductDto[]>{
     if(keyword === ''){

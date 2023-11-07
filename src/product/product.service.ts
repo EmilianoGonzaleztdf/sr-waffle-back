@@ -18,7 +18,7 @@ export class ProductService {
   }
 
   async searchProductsByKeyword(keyword: string): Promise<Product[]> {
-    if (!keyword) {
+    if (keyword === '') {
       return this.productRepository.find(); // Devuelve todos los productos si la keyword está vacía
     }
     keyword = keyword.toLowerCase();
