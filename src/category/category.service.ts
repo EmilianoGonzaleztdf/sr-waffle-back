@@ -27,7 +27,7 @@ export class CategoryService {
   }
 
   async update(id: number, createCategory: CreateCategoryDto) {
-    const criteria : FindOneOptions = { where : { id_product : id}};
+    const criteria : FindOneOptions = { where : { id_category : id}};
     let category : Category = await this.categoryRepository.findOne(criteria);
     if (!category) {
       throw new Error('no se pudo encontrar la categoria a modificar');

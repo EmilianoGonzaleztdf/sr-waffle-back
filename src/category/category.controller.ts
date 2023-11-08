@@ -30,7 +30,7 @@ export class CategoryController {
   async remove (@Param('id') id : number) : Promise<boolean>{
     return this.categoryService.remove(id);
   }
-  @Post('/createProduct')
+  @Post('/createCategory')
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
   }
