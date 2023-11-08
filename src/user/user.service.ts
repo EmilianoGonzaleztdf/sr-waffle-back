@@ -36,7 +36,7 @@ export class UserService {
   async searchUsersByKeyword(keyword: string): Promise<User[]> {
     let filter = 'LOWER(user.email) LIKE :keyword OR LOWER(user.user) LIKE :keyword OR LOWER(person.name) LIKE :keyword OR LOWER(person.lastname) LIKE :keyword OR LOWER(person.dni) LIKE :keyword OR LOWER(role.description) LIKE :keyword';
     if (keyword === '') {
-      return this.userRepository.find(); // Devuelve todos los productos si la keyword está vacía
+      return this.userRepository.find(); // Devuelve todos los usuarios si la keyword está vacía
     }
     keyword = keyword.toLowerCase();
     return this.userRepository

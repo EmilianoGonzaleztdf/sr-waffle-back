@@ -19,7 +19,7 @@ export class RoleService {
 
   async searchRoleByKeyword(keyword: string): Promise<Role[]> {
     if (keyword === '') {
-      return this.roleRepository.find(); // Devuelve todos los productos si la keyword está vacía
+      return this.roleRepository.find(); // Devuelve todos los roles si la keyword está vacía
     }
     keyword = keyword.toLowerCase();
     return this.roleRepository
@@ -29,7 +29,7 @@ export class RoleService {
   }
 
   async update(id: number, createRole: CreateRoleDto) {
-    const criteria : FindOneOptions = { where : { id_product : id}};
+    const criteria : FindOneOptions = { where : { id_role : id}};
     let role : Role = await this.roleRepository.findOne(criteria);
     if (!role) {
       throw new Error('no se pudo encontrar el rol a modificar');
@@ -41,7 +41,7 @@ export class RoleService {
   }
 
   async remove(id: number) {
-    const criteria: FindOneOptions = { where: { id_product: id } };
+    const criteria: FindOneOptions = { where: { id_role: id } };
     let role : Role = await this.roleRepository.findOne(criteria);
       if(role){
         await this.roleRepository.remove(role);
