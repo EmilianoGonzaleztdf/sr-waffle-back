@@ -1,7 +1,7 @@
 import { HistorySale } from "src/history_sale/entities/history_sale.entity";
 import { Order } from "src/order/entities/order.entity";
 import { User } from "src/user/entities/user.entity";
-import { Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'sale'})
 export class Sale {
@@ -16,8 +16,8 @@ export class Sale {
     @JoinColumn({name : "fk_id_user"})
     user:User;
 
-    @OneToOne(()=>HistorySale, historySale=>historySale.sale)
-    historySale:HistorySale;
+    @OneToMany(()=>HistorySale, historySale=>historySale.sale)
+    historySale:HistorySale[];
 
     @OneToOne(()=>Order, order=>order.sale)
     @JoinColumn({name : "fk_id_order"})

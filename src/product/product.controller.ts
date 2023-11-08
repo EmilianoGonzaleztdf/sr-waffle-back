@@ -31,7 +31,7 @@ export class ProductController {
     return this.productService.remove(id);
   }
   @Post('/createProduct')
-  async create(@Body() createProductDto: CreateProductDto) {
+  async create(@Body() createProductDto: CreateProductDto) : Promise<Product> {
     return this.productService.create(createProductDto);
   }
 

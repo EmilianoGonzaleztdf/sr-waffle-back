@@ -1,6 +1,6 @@
 import { Product } from "src/product/entities/product.entity";
 import { Sale } from "src/sale/entities/sale.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'history_sale'})
 export class HistorySale {
@@ -14,12 +14,12 @@ export class HistorySale {
 
     // RELACIONES
 
-    @OneToOne(()=>Sale, sale=>sale.historySale)
+    @ManyToOne(()=>Sale, sale=>sale.historySale)
     @JoinColumn({name : "fk_id_sale"})
     sale:Sale;
 
     
-    @OneToOne(()=>Product, product=>product.historySale)
+    @ManyToOne(()=>Product, product=>product.historySale)
     @JoinColumn({name : 'fk_id_product'})
     product:Product;
     /*

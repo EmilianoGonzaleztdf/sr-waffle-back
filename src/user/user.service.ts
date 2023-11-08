@@ -19,42 +19,55 @@ export class UserService {
     private readonly roleRepository: Repository<Role>
   ){}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) : Promise<User> {
+    const { email, user, password, status } = createUserDto;
+
+    const newUser = this.userRepository.create({ email, user, password, status });
+
+    const savedUser = await this.userRepository.save(newUser);
+
+    return savedUser;
   }
 
   async findAll() : Promise<CreateUserDto[]>{
     return await this.userRepository.find();
   }
 
- /* async public searchUsersByKeyword(keyword: string) : Promise<any[]> {
-    if (!keyword) {
-      return await this.userRepository.find(); // Devuelve todos los usuarios si el keyword está vacío
+  async searchUsersByKeyword(keyword: string): Promise<User[]> {
+    let filter = 'LOWER(user.email) LIKE :keyword OR LOWER(user.user) LIKE :keyword OR LOWER(person.name) LIKE :keyword OR LOWER(person.lastname) LIKE :keyword OR LOWER(person.dni) LIKE :keyword OR LOWER(role.description) LIKE :keyword';
+    if (keyword === '') {
+      return this.userRepository.find(); // Devuelve todos los productos si la keyword está vacía
     }
-  
     keyword = keyword.toLowerCase();
-    let users = await this.userRepository.query('')
-
-    const criterio : FindOneOptions = { where: {id_user:id_user}, relations:['person'] };
-    return await this.userRepository.filter(
-      (user) =>
-        user.name.toLowerCase().includes(keyword) ||
-        user.lastName.toLowerCase().includes(keyword) ||
-        user.dni.toLowerCase().includes(keyword) ||
-        user.email.toLowerCase().includes(keyword) ||
-        user.user.toLowerCase().includes(keyword) ||
-        user.rol.toLowerCase().includes(keyword),
-    );
-    }*/
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.userRepository
+      .createQueryBuilder('user') // select from blabla
+      .leftJoin('user.person', 'person')
+      .leftJoin('user.role', 'role')
+      .where(filter, { keyword: `%${keyword}%` })
+      .getMany();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, createUserDto: CreateUserDto) {
+    const criteria : FindOneOptions = { where : { id_user : id}};
+    let user : User = await this.userRepository.findOne(criteria);
+    if (!user) {
+      throw new Error('no se pudo encontrar el usuario a modificar');
+    } else {
+      user.setEmail(createUserDto.email);
+      user.setPassword(createUserDto.password);
+      user.setUser(createUserDto.user);
+      user.setStatus(createUserDto.status);
+      user = await this.userRepository.save(user);
+      return ('se cambio el usuario')
+    } 
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    const criteria: FindOneOptions = { where: { id_user: id } };
+    let user : User = await this.userRepository.findOne(criteria);
+      if(user){
+        await this.userRepository.remove(user);
+        return true;
+      } else throw new Error('no se encontro el usuario a eliminar');
   }
 }

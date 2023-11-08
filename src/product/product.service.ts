@@ -23,7 +23,7 @@ export class ProductService {
     keyword = keyword.toLowerCase();
     return this.productRepository
       .createQueryBuilder('product')
-      .where('LOWER(product.name) LIKE :keyword OR LOWER(product.description) LIKE :keyword', { keyword: `%${keyword}%` })
+      .where('LOWER(product.name) LIKE :keyword OR LOWER(product.description) LIKE :keyword OR LOWER(product.bar_code) LIKE :keyword', { keyword: `%${keyword}%` })
       .getMany();
   }
 
@@ -54,12 +54,9 @@ export class ProductService {
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const { bar_code, name, description, imgURL, price } = createProductDto;
-
     const newProduct = this.productRepository.create({ bar_code, name, description, imgURL, price
     });
-
     const savedProduct = await this.productRepository.save(newProduct);
-
     return savedProduct;
   }
 }

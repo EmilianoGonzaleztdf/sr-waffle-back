@@ -39,8 +39,8 @@ export class Product {
   @JoinColumn({ name: 'fk_id_category' })
   category: Category;
 
-  @OneToOne(() => HistorySale, (historySale) => historySale.product)
-  historySale: HistorySale;
+  @OneToMany(() => HistorySale, (historySale) => historySale.product)
+  historySale: HistorySale[];
 
   @ManyToMany(() => Order, (order) => order.products)
   @JoinTable({
