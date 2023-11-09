@@ -10,7 +10,7 @@ export class Category {
   @Column()
   description : string;
 
-  @OneToMany(()=> Product , product => product.category)
+  @OneToMany(()=> Product , product => product.fk_id_category)
   products : Product[];
 
   constructor( description : string){

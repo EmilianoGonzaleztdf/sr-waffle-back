@@ -4,4 +4,5 @@ export class CreateProductDto {
   readonly description : string;
   readonly imgURL : string;
   readonly price : number;
+  readonly fk_id_category : number;
 }
