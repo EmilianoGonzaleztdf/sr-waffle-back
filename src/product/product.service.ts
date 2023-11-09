@@ -3,13 +3,16 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { FindOneOptions, Repository } from 'typeorm';
+import { Category } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class ProductService {
 
   constructor(
     @InjectRepository(Product)
-    private readonly productRepository : Repository<Product>
+    private readonly productRepository : Repository<Product>,
+    @InjectRepository(Category)
+    private readonly categoryRepository : Repository<Category>    
   ){};
 
   async findAll(): Promise<CreateProductDto[]> {
@@ -53,10 +56,15 @@ export class ProductService {
   }
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
-    const { bar_code, name, description, imgURL, price, fk_id_category } = createProductDto;
-    const newProduct = this.productRepository.create({ bar_code, name, description, imgURL, price,fk_id_category
-    });
-    const savedProduct = await this.productRepository.save(newProduct);
-    return savedProduct;
-  }
+    const criteria: FindOneOptions = { where: { id_category: createProductDto.fk_id_category } };
+    const categoria : Category = await this.categoryRepository.findOne(criteria);
+      if(!categoria){
+        throw new Error('no se encontro la categoria del producto a crear ');
+    } else {
+        const { bar_code, name, description, imgURL, price, fk_id_category } = createProductDto;
+        const newProduct = this.productRepository.create({ bar_code, name, description, imgURL, price,fk_id_category });
+        const savedProduct = await this.productRepository.save(newProduct);
+        return savedProduct;
+      } 
+}
 }
