@@ -35,7 +35,7 @@ export class Product {
   // relacion una categoria tiene muchos productos
   @ManyToOne(() => Category, (category) => category.products)
   @JoinColumn({ name: 'fk_id_category' })
-  fk_id_category: number;
+  category: Category;
 
   @OneToMany(() => HistorySale, (historySale) => historySale.product)
   historySale: HistorySale[];
@@ -54,14 +54,12 @@ export class Product {
     description: string,
     imgURL: string,
     price: number,
-    fk_id_category: number,
   ) {
     this.bar_code = bar_code;
     this.name = name;
     this.description = description;
     this.imgURL = imgURL;
     this.price = price;
-    this.fk_id_category = fk_id_category;
   }
 
   // get

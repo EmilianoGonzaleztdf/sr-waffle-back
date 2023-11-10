@@ -55,14 +55,15 @@ export class ProductService {
       } else throw new Error('no se encontro el producto a eliminar');
   }
 
-  async create(createProductDto: CreateProductDto): Promise<Product> {
-    const criteria: FindOneOptions = { where: { id_category: createProductDto.fk_id_category } };
+  async create(createProductDto: CreateProductDto , id_category:number): Promise<Product> {
+    const criteria: FindOneOptions = { where: { id_category: id_category } };
     const categoria : Category = await this.categoryRepository.findOne(criteria);
       if(!categoria){
         throw new Error('no se encontro la categoria del producto a crear ');
     } else {
-        const { bar_code, name, description, imgURL, price, fk_id_category } = createProductDto;
-        const newProduct = this.productRepository.create({ bar_code, name, description, imgURL, price,fk_id_category });
+        const { bar_code, name, description, imgURL, price } = createProductDto;
+        const newProduct = new Product(bar_code, name, description, imgURL, price);
+        newProduct.category = categoria;
         const savedProduct = await this.productRepository.save(newProduct);
         return savedProduct;
       } 
