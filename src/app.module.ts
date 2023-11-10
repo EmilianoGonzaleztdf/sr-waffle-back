@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-/*
+
 import { ProductsController } from './old/products-copy/products.controller';
 import { ProductsService } from './old/products-copy/products.service';
 import { UsersController } from './old/users-copy/users.controller';
@@ -12,7 +12,7 @@ import { StockController } from './old/stock-copy/stock.controller';
 import { StockService } from './old/stock-copy/stock.service';
 import { CartController } from './old/cart-copy/cart.controller';
 import { CartService } from './old/cart-copy/cart.service';
-*/
+
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 
@@ -27,7 +27,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     entities: [__dirname + '/**/**/**.entity{.ts,.js}'],
     synchronize: true, //modo desarrollador.
   }),],
-  controllers: [AppController, /*ProductsController, UsersController, SalesController, StockController, CartController*/],
-  providers: [AppService, /*ProductsService, UsersService, SalesService, StockService, CartService*/],
+  controllers: [AppController, ProductsController, UsersController, SalesController, StockController, CartController],
+  providers: [AppService, ProductsService, UsersService, SalesService, StockService, CartService],
 })
 export class AppModule {}
