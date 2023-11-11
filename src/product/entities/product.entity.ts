@@ -32,6 +32,9 @@ export class Product {
 
   @Column()
   price: number;
+  @Column()
+  status: boolean;
+
   // relacion una categoria tiene muchos productos
   @ManyToOne(() => Category, (category) => category.products)
   @JoinColumn({ name: 'fk_id_category' })
@@ -60,6 +63,7 @@ export class Product {
     this.description = description;
     this.imgURL = imgURL;
     this.price = price;
+    this.status = true;
   }
 
   // get
@@ -81,7 +85,9 @@ export class Product {
   public getPrice(): number {
     return this.price;
   }
-
+  public getStatus(): boolean{
+    return this.status;
+  }
   //set
   public setBar_Code(bar_Code: string) {
     this.bar_code = bar_Code;
@@ -97,5 +103,8 @@ export class Product {
   }
   public setPrice(price: number) {
     this.price = price;
+  }
+  public setStatus(status: boolean) {
+    this.status = status;
   }
 }

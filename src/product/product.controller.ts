@@ -21,9 +21,9 @@ export class ProductController {
     return this.productService.searchProductsByKeyword(keyword);
   } ;
 
-  @Patch('/update/:id')
-  async update (@Body() product:Product, @Param('id') id : number) : Promise<String>{
-    return await this.productService.update(id, product);
+  @Patch('/update/:id/:category')
+  async update (@Body() product:Product, @Param('id') id : number,@Param('category') category : number) : Promise<String>{
+    return await this.productService.update(id, product, category);
   }
 
   @Delete('/delete/:id')
