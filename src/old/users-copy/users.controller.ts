@@ -22,10 +22,12 @@ export class UsersController {
   public postCreateUser(@Body()body): string {
     return this.usersService.postCreateUser(body);
   }
+
   @Delete('/delete/:id')
   public getDeleteUsertID(@Param('id',ParseIntPipe)id:number):any{
     return this.usersService.getDeleteUserID(id);
   }
+  
   @Put('/update/:id')
   public updateUserByID(@Param('id', ParseIntPipe) id: number, @Body() body: any): any {
     return this.usersService.updateUserByID(id, body);

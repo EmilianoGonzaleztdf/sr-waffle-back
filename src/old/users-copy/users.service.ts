@@ -64,6 +64,7 @@ export class UsersService {
   public getUsers(): any {
     return this.users;
   }
+  
   public searchUsersByKeyword(keyword: string): any[] {
     if (!keyword) {
       return this.users; // Devuelve todos los usuarios si el keyword está vacío
@@ -80,6 +81,7 @@ export class UsersService {
         user.rol.toLowerCase().includes(keyword),
     );
   };
+
   public postCreateUser(body): string {
     this.users.push(body);
     return `The user was created with the following attributes:
@@ -94,6 +96,7 @@ export class UsersService {
     status : ${body.status}
     `;
   }
+
   public getDeleteUserID(id: number): any {
     let userExists = false;
     let userPosition = 0;

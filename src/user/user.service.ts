@@ -1,0 +1,73 @@
+import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { FindOneOptions, Repository } from 'typeorm';
+import { Person } from 'src/person/entities/person.entity';
+import { Role } from 'src/role/entities/role.entity';
+
+@Injectable()
+export class UserService {
+
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    @InjectRepository(Person)
+    private readonly personRepository: Repository<Person>,
+    @InjectRepository(Role)
+    private readonly roleRepository: Repository<Role>
+  ){}
+
+  async create(createUserDto: CreateUserDto) : Promise<User> {
+    const { email, user, password, status } = createUserDto;
+
+    const newUser = this.userRepository.create({ email, user, password, status });
+
+    const savedUser = await this.userRepository.save(newUser);
+
+    return savedUser;
+  }
+
+  async findAll() : Promise<CreateUserDto[]>{
+    return await this.userRepository.find();
+  }
+
+  async searchUsersByKeyword(keyword: string): Promise<User[]> {
+    let filter = 'LOWER(user.email) LIKE :keyword OR LOWER(user.user) LIKE :keyword OR LOWER(person.name) LIKE :keyword OR LOWER(person.lastname) LIKE :keyword OR LOWER(person.dni) LIKE :keyword OR LOWER(role.description) LIKE :keyword';
+    if (keyword === '') {
+      return this.userRepository.find(); // Devuelve todos los usuarios si la keyword está vacía
+    }
+    keyword = keyword.toLowerCase();
+    return this.userRepository
+      .createQueryBuilder('user') // select from blabla
+      .leftJoin('user.person', 'person')
+      .leftJoin('user.role', 'role')
+      .where(filter, { keyword: `%${keyword}%` })
+      .getMany();
+  }
+
+  async update(id: number, createUserDto: CreateUserDto) {
+    const criteria : FindOneOptions = { where : { id_user : id}};
+    let user : User = await this.userRepository.findOne(criteria);
+    if (!user) {
+      throw new Error('no se pudo encontrar el usuario a modificar');
+    } else {
+      user.setEmail(createUserDto.email);
+      user.setPassword(createUserDto.password);
+      user.setUser(createUserDto.user);
+      user.setStatus(createUserDto.status);
+      user = await this.userRepository.save(user);
+      return ('se cambio el usuario')
+    } 
+  }
+
+  async remove(id: number) {
+    const criteria: FindOneOptions = { where: { id_user: id } };
+    let user : User = await this.userRepository.findOne(criteria);
+      if(user){
+        await this.userRepository.remove(user);
+        return true;
+      } else throw new Error('no se encontro el usuario a eliminar');
+  }
+}
