@@ -1,16 +1,15 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('/createUser')
-  async create(@Body() createUserDto: CreateUserDto) : Promise<User> {
-    return await this.userService.create(createUserDto);
+  @Post('/createUser/:id')
+  async create(@Body() createUserDto: CreateUserDto , @Param('id') id : number) : Promise<User> {
+    return await this.userService.create(createUserDto,id);
   }
 
   @Get('/list')
@@ -26,9 +25,9 @@ export class UserController {
     return this.userService.searchUsersByKeyword(keyword);
   }
 
-  @Patch('/update/:id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() createUserDto: CreateUserDto) : Promise<String> {
-    return this.userService.update(id, createUserDto);
+  @Patch('/update/:id/:role')
+  async update(@Param('id', ParseIntPipe) id: number, @Body() createUserDto: CreateUserDto, @Param('role') role : number) : Promise<String> {
+    return this.userService.update(id, createUserDto, role);
   }
 
   @Delete('/delete/:id')
