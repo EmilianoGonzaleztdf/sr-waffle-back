@@ -82,9 +82,9 @@ export class UserService {
   }
   async findAllUser(): Promise<any> {
     const result = await this.userRepository
-      .createQueryBuilder('user')  // Cambié 'role' a 'user'
-      .innerJoinAndSelect('user.role', 'role')  // Inner join con la relación 'role'
-      .innerJoinAndSelect('user.person', 'person')  // Inner join con la relación 'person'
+      .createQueryBuilder('user') 
+      .innerJoinAndSelect('user.role', 'role') 
+      .innerJoinAndSelect('user.person', 'person')
       .getMany();
     return result;
   }
