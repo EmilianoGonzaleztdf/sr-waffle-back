@@ -36,7 +36,8 @@ export class ProductService {
     const criteria: FindOneOptions = { where: { id_product: id } };
     let product: Product = await this.productRepository.findOne(criteria);
     if (!product) {
-      throw new Error('no se pudo encontrar el producto a modificar');}
+      throw new Error('no se pudo encontrar el producto a modificar');
+    }
     const criteriaCat: FindOneOptions = { where: { id_category: category } };
     const categoria: Category = await this.categoryRepository.findOne(criteriaCat);
     console.log(categoria);
@@ -64,24 +65,22 @@ export class ProductService {
     } else throw new Error('no se encontro el producto a eliminar');
   }
 
-  async create(
-    createProductDto: CreateProductDto,
-    id_category: number,
-  ): Promise<Product> {
-    const criteria: FindOneOptions = { where: { id_category: id_category } };
-    const categoria: Category = await this.categoryRepository.findOne(criteria);
-    if (!categoria) {
+  async create(createProductDto: CreateProductDto,id_category: number,): Promise<Product> {
+    const criteriaCategory: FindOneOptions = { where: { id_category: id_category } };
+    const category: Category = await this.categoryRepository.findOne(criteriaCategory);
+    if (!category) {
       throw new Error('no se encontro la categoria del producto a crear ');
     } else {
-      const { bar_code, name, description, imgURL, price, status} = createProductDto;
+      const { bar_code, name, description, imgURL, price} = createProductDto;
       const newProduct = new Product(
         bar_code,
         name,
         description,
         imgURL,
         price,
+        
       );
-      newProduct.category = categoria;
+      newProduct.category = category;
       const savedProduct = await this.productRepository.save(newProduct);
       return savedProduct;
     }

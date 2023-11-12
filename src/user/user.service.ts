@@ -19,14 +19,18 @@ export class UserService {
     private readonly roleRepository: Repository<Role>
   ){}
 
-  async create(createUserDto: CreateUserDto) : Promise<User> {
+  async create(createUserDto: CreateUserDto , id_role : number) : Promise<User> {
+    const criteriaIdRole : FindOneOptions = { where : { id_role: id_role}}
+    const role : Role = await this.roleRepository.findOne(criteriaIdRole)
+    if(!role){
+      throw new Error('no se encontro el rol que desea asignar al nuevo usuario');
+    } else {
     const { email, user, password, status } = createUserDto;
-
-    const newUser = this.userRepository.create({ email, user, password, status });
-
-    const savedUser = await this.userRepository.save(newUser);
-
+    const newUser = new User( email, user, password, status );
+    newUser.role = role;
+    const savedUser = await this.userRepository.save(newUser)
     return savedUser;
+    }
   }
 
   async findAll() : Promise<CreateUserDto[]>{
@@ -47,16 +51,22 @@ export class UserService {
       .getMany();
   }
 
-  async update(id: number, createUserDto: CreateUserDto) {
-    const criteria : FindOneOptions = { where : { id_user : id}};
-    let user : User = await this.userRepository.findOne(criteria);
+  async update(id: number, createUserDto: CreateUserDto, id_role : number) {
+    const criteriaIdUser : FindOneOptions = { where : { id_user : id}};
+    let user : User = await this.userRepository.findOne(criteriaIdUser);
     if (!user) {
       throw new Error('no se pudo encontrar el usuario a modificar');
-    } else {
+    }
+      const criteriaIdRole : FindOneOptions = { where : { id_role: id_role}}
+      const role : Role = await this.roleRepository.findOne(criteriaIdRole)
+      if(!role){
+        throw new Error('no se encontro el rol que desea asignar al nuevo usuario');
+      } else {
       user.setEmail(createUserDto.email);
       user.setPassword(createUserDto.password);
       user.setUser(createUserDto.user);
       user.setStatus(createUserDto.status);
+      user.role = role;
       user = await this.userRepository.save(user);
       return ('se cambio el usuario')
     } 
