@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePersonDto } from './dto/create-person.dto';
-import { UpdatePersonDto } from './dto/update-person.dto';
 import { Person } from './entities/person.entity';
 import { FindOneOptions, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class PersonService {
 
   constructor(
     @InjectRepository(Person)
-    private readonly personRepository : Repository<Person>
+    private readonly personRepository : Repository<Person>,
+    @InjectRepository(User)
+    private readonly userRepository : Repository<User>
   ){};
 
   async findAll(): Promise<CreatePersonDto[]> {
@@ -28,15 +30,21 @@ export class PersonService {
       .getMany();
   }
 
-  async update(id: number, createPerson: CreatePersonDto) {
-    const criteria : FindOneOptions = { where : { id_person : id}};
-    let person : Person = await this.personRepository.findOne(criteria);
+  async update(id: number, createPerson: CreatePersonDto, id_user : number) {
+    const criteriaIdPerson : FindOneOptions = { where : { id_person : id}};
+    let person : Person = await this.personRepository.findOne(criteriaIdPerson);
     if (!person) {
-      throw new Error('no se pudo encontrar la persona a modificar');
-    } else {
+      throw new Error('no se pudo encontrar la persona a modificar'); 
+    } 
+    const criteriaIdUser : FindOneOptions = { where : { id_user: id_user}}
+      const user : User = await this.userRepository.findOne(criteriaIdUser)
+      if(!user){
+        throw new Error('no se encontro el usuario que desea asignar a la persona');
+      } else {
       person.setDni(createPerson.dni);
       person.setName(createPerson.name);
       person.setLastname(createPerson.lastname);
+      person.user = user;
       person = await this.personRepository.save(person);
       return ('se cambio la persona')
     }
@@ -51,10 +59,17 @@ export class PersonService {
       } else throw new Error('no se encontro la persona a eliminar');
   }
 
-  async create(createPersonDto: CreatePersonDto): Promise<Person> {
+  async create(createPersonDto: CreatePersonDto, id_user : number): Promise<Person> {
+    const criteriaIdUser : FindOneOptions = { where : { id_user: id_user}}
+    const user : User = await this.userRepository.findOne(criteriaIdUser)
+    if(!user){
+      throw new Error('no se encontro el usuario al que desea asignar la persona');
+    } else {
     const { dni, name, lastname } = createPersonDto;
-    const newPerson = this.personRepository.create({ dni, name, lastname });
+    const newPerson = new Person(dni, name, lastname);
+    newPerson.user = user;
     const savedPerson = await this.personRepository.save(newPerson);
     return savedPerson;
+    }
   }
 }

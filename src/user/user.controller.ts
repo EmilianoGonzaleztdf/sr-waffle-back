@@ -34,4 +34,8 @@ export class UserController {
   async remove(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.userService.remove(id);
   }
+  @Get('/alluser')
+  async findAllUsers(): Promise<any> {
+    return this.userService.findAllUser();
+  }
 }

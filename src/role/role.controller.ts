@@ -12,7 +12,6 @@ export class RoleController {
   async findAll() : Promise<CreateRoleDto[]> {
     return this.roleService.findAll();
   }
-  
   @Get('search/:keyword')
   async searchProductsByKeyword(@Param('keyword') keyword : string) : Promise<CreateRoleDto[]>{
     if(keyword === ''){

@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, Repository, createConnection, createQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { Person } from 'src/person/entities/person.entity';
 
 @Injectable()
 export class RoleService {
@@ -16,7 +18,6 @@ export class RoleService {
   async findAll(): Promise<CreateRoleDto[]> {
     return await this.roleRepository.find();
   }
-
   async searchRoleByKeyword(keyword: string): Promise<Role[]> {
     if (keyword === '') {
       return this.roleRepository.find(); // Devuelve todos los roles si la keyword está vacía

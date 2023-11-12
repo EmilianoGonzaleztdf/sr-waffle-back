@@ -20,17 +20,17 @@ export class PersonController {
     return this.personService.searchPersonByKeyword(keyword);
   } ;
 
-  @Patch('/update/:id')
-  async update (@Body() person:Person, @Param('id') id : number) : Promise<String>{
-    return await this.personService.update(id, person);
+  @Patch('/update/:id/:user')
+  async update (@Body() person:Person, @Param('id') id : number, @Param('user') user : number) : Promise<String>{
+    return await this.personService.update(id, person, user);
   }
 
   @Delete('/delete/:id')
   async remove (@Param('id') id : number) : Promise<boolean>{
     return this.personService.remove(id);
   }
-  @Post('/createPerson')
-  async create(@Body() createPersonDto: CreatePersonDto) : Promise<Person> {
-    return this.personService.create(createPersonDto);
+  @Post('/createPerson/:id')
+  async create(@Body() createPersonDto: CreatePersonDto, @Param('id') id : number) : Promise<Person> {
+    return this.personService.create(createPersonDto, id);
   }
 }
