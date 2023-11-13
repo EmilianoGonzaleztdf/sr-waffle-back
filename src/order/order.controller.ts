@@ -10,6 +10,14 @@ export class OrderController {
   async findAll() : Promise<Order[]> {
     return this.orderService.findAll();
   }
+  @Get('/findAllOrdersWithRelations')
+  async findAllOrdersWithRelations() : Promise<Order[]> {
+    return this.orderService.findAllOrdersWithRelations();
+  }
+  @Get('/findAllOrdersForTodayWithRelations')
+  async findAllOrdersForTodayWithRelations() : Promise<Order[]> {
+    return this.orderService.findAllOrdersForTodayWithRelations();
+  }
   @Post('/create-order')
   async createOrder() {
     return await this.orderService.createOrder();

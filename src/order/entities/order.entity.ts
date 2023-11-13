@@ -19,7 +19,7 @@ export class Order {
   id_order: number;
 
   @CreateDateColumn()
-  fecha: Date;
+  date: Date;
 
   @ManyToOne(() => Status, (status) => status.orders)
   @JoinColumn({ name: 'fk_id_status' })
@@ -40,9 +40,6 @@ export class Order {
   sale: Sale;
 
   constructor() {
-    // No inicialices 'products' aquí
-    // En lugar de eso, haz la inicialización en el constructor
-
   }
 }
   /*

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Order } from './entities/order.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Between, FindOneOptions, Repository } from 'typeorm';
 import { Product } from 'src/product/entities/product.entity';
 import { Status } from 'src/status/entities/status.entity';
 import { OrderProduct } from 'src/order_product/entities/order_product.entity';
@@ -22,6 +22,28 @@ export class OrderService {
 
   async findAll(): Promise<Order[]> {
     return await this.orderRepository.find();
+  }
+  
+  async findAllOrdersWithRelations(): Promise<Order[]> {
+    const orders = await this.orderRepository.find({
+      relations: ['status', 'sale', 'products', 'quantities'],
+    });
+    return orders;
+  }
+  async findAllOrdersForTodayWithRelations(): Promise<Order[]> {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+  
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+  
+    const orders = await this.orderRepository.find({
+      where: {
+        date: Between(today, tomorrow),
+      },
+      relations: ['status', 'sale', 'products', 'quantities'],
+    });
+    return orders;
   }
 
   async createOrder(): Promise<Order> {
