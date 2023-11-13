@@ -1,8 +1,9 @@
+import { OrderProduct } from 'src/order_product/entities/order_product.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { Sale } from 'src/sale/entities/sale.entity';
 import { Status } from 'src/status/entities/status.entity';
 import {
-  Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
@@ -12,24 +13,39 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
 @Entity({ name: 'order' })
 export class Order {
   @PrimaryGeneratedColumn()
   id_order: number;
 
-  @Column()
-  date: Date;
+  @CreateDateColumn()
+  fecha: Date;
 
   @ManyToOne(() => Status, (status) => status.orders)
   @JoinColumn({ name: 'fk_id_status' })
   status: Status;
 
-  @ManyToMany(() => Product, (product) => product.orders)
+  @ManyToMany(() => Product, { cascade: true })
+  @JoinTable({
+    name: 'order_product',
+    joinColumn: { name: 'fk_id_order' },
+    inverseJoinColumn: { name: 'fk_id_product' },
+  })
   products: Product[];
 
-  @OneToOne(()=>Sale, sale=>sale.order)
-  sale:Sale;
+  @OneToMany(() => OrderProduct, (quantities) => quantities.order)
+  quantities: OrderProduct[];
 
-  constructor() {}
+  @OneToOne(() => Sale, (sale) => sale.order)
+  sale: Sale;
+
+  constructor() {
+    // No inicialices 'products' aquí
+    // En lugar de eso, haz la inicialización en el constructor
+
+  }
 }
+  /*
+  @ManyToMany(() => Product, (product) => product.orders)
+  products: Product[];
+  */

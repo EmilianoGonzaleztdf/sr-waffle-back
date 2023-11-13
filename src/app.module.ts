@@ -23,6 +23,7 @@ import { OrderModule } from './order/order.module';
 import { StatusModule } from './status/status.module';
 import { SaleModule } from './sale/sale.module';
 import { HistorySaleModule } from './history_sale/history_sale.module';
+import { OrderProductModule } from './order_product/order_product.module';
 
 
 @Module({
@@ -45,7 +46,7 @@ import { HistorySaleModule } from './history_sale/history_sale.module';
     */
     entities: [__dirname + '/**/**/**.entity{.ts,.js}'],
     synchronize: true, //modo desarrollador.
-  }), CategoryModule, ProductModule, RoleModule, PersonModule, UserModule, OrderModule, StatusModule, SaleModule, HistorySaleModule,],
+  }), CategoryModule, ProductModule, RoleModule, PersonModule, UserModule, OrderModule, StatusModule, SaleModule, HistorySaleModule, OrderProductModule,],
   controllers: [AppController, /*ProductsController, UsersController, SalesController, StockController, CartController*/],
   providers: [AppService, /*ProductsService, UsersService, SalesService, StockService, CartService*/],
 })

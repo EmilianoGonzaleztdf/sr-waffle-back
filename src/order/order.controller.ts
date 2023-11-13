@@ -1,34 +1,33 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { Order } from './entities/order.entity';
 
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
-
-  @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.orderService.create(createOrderDto);
-  }
-
-  @Get()
-  findAll() {
+  
+  @Get('/list')
+  async findAll() : Promise<Order[]> {
     return this.orderService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
+  @Post('/create-order')
+  async createOrder() {
+    return await this.orderService.createOrder();
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
+  
+  @Get('/findByID/:id_order')
+  async getOrder(@Param('id_order') id_order: number) {
+    return await this.orderService.getOrderById(id_order);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderService.remove(+id);
+  
+  @Post('/addProductToOrder/:order/:product') 
+  async addProductToOrder(@Param('order') id_order: number,@Param('product') id_product: number,): Promise<Order> {
+    return await this.orderService.addProductToOrder(id_order, id_product);
   }
+  @Get('/product/:id_product')
+  async buscaproducto(@Param('id_product') id_product: number) : Promise<any> {
+    return this.orderService.buscaProducto(id_product);
+  }
+  // Implement other endpoints for managing the order
 }
+  // Implement other endpoints for managing the order

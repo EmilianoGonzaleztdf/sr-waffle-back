@@ -2,33 +2,39 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { SaleService } from './sale.service';
 import { CreateSaleDto } from './dto/create-sale.dto';
 import { UpdateSaleDto } from './dto/update-sale.dto';
+import { Sale } from './entities/sale.entity';
 
 @Controller('sale')
 export class SaleController {
   constructor(private readonly saleService: SaleService) {}
 
-  @Post()
-  create(@Body() createSaleDto: CreateSaleDto) {
-    return this.saleService.create(createSaleDto);
-  }
-
-  @Get()
-  findAll() {
+  @Get('/list')
+  async findAll() : Promise<CreateSaleDto[]> {
     return this.saleService.findAll();
   }
+  /*
+  @Get('search/:keyword')
+  async searchSaleByKeyword(@Param('keyword') keyword : string) : Promise<CreateSaleDto[]>{
+    if(keyword === ''){
+      return this.saleService.findAll();
+    }
+    return this.saleService.searchSaleByKeyword(keyword);
+  } ;
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.saleService.findOne(+id);
+  
+  @Patch('/update/:id/:category')
+  async update (@Body() sale:sale, @Param('id') id : number,@Param('category') category : number) : Promise<String>{
+    return await this.saleService.update(id, product, category);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSaleDto: UpdateSaleDto) {
-    return this.saleService.update(+id, updateSaleDto);
+  @Delete('/delete/:id')
+  async remove (@Param('id') id : number) : Promise<boolean>{
+    return this.saleService.remove(id);
   }
+  */
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.saleService.remove(+id);
+  @Post('/createSale/:iduser/:idorder')
+  async create(@Param('iduser') iduser : number, @Param('idorder') idorder : number) : Promise<Sale> {
+    return this.saleService.create(iduser, idorder);
   }
 }
