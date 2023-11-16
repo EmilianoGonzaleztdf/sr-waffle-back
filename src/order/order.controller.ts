@@ -1,4 +1,4 @@
-import { Controller, Get, Post,Param,} from '@nestjs/common';
+import { Controller, Get, Post,Param, Patch,} from '@nestjs/common';
 import { OrderService } from './order.service';
 import { Order } from './entities/order.entity';
 
@@ -28,18 +28,13 @@ export class OrderController {
   }
   // busco ordenes por id
   @Get('/findByID/:id_order')
-  async getOrder(@Param('id_order') id_order: number) {
+  async getOrderById(@Param('id_order') id_order: number) {
     return await this.orderService.getOrderById(id_order);
   }
   // agrega un producto a un pedido (localhost:3001/order/addProductToOrder/7/1) 7 es el numero del pedido y 1 el numero del producto
   @Post('/addProductToOrder/:order/:product') 
   async addProductToOrder(@Param('order') id_order: number,@Param('product') id_product: number,): Promise<Order> {
     return await this.orderService.addProductToOrder(id_order, id_product);
-  }
-  // busca un producto por id
-  @Get('/product/:id_product')
-  async buscaproducto(@Param('id_product') id_product: number) : Promise<any> {
-    return this.orderService.buscaProducto(id_product);
   }
   // devuelve el total de un pedido buscado por id
   @Get('/getTotalPriceOfOrder/:id_order')
@@ -56,5 +51,9 @@ export class OrderController {
   @Get('today-with-product-totals')
   async getAllOrdersForTodayWithProductTotals(): Promise<any[]> {
     return await this.orderService.findAllOrdersForTodayWithProductTotals();
+  }
+  @Patch('updateStatus/:id_order/:id_status')
+  async changeOrderStatus(@Param('id_order') id_order: number,@Param('id_status') id_status: string,): Promise<any> {
+    return await this.orderService.changeOrderStatus(id_order, id_status);
   }
 }
