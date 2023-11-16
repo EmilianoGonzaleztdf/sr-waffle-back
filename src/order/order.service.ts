@@ -95,6 +95,7 @@ export class OrderService {
       console.log(product)
       return product;
   }
+  
   async getTotalPriceOfOrder(id_order: number): Promise<number> {
     //verifico si la orden existe
     const order = await this.getOrderById(id_order);
@@ -108,7 +109,6 @@ export class OrderService {
         return accumulator + product.price;
       }, 0);
     }
-  
     return totalPrice;
   }
 
