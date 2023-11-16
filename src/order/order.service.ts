@@ -66,9 +66,9 @@ export class OrderService {
   async getOrderByIdQuantity(id_order: number){
     const order = this.getOrderById(id_order);
   }
-  async addProductToOrder(orderId: number, id_product: number): Promise<Order> {
+  async addProductToOrder(id_order: number, id_product: number): Promise<Order> {
     // Busco la orden a la que deseo cargar productos
-    let order = await this.getOrderById(orderId);
+    let order = await this.getOrderById(id_order);
     if (!order) {
       throw new Error('No se encontró la orden');
     } 
@@ -95,7 +95,34 @@ export class OrderService {
       console.log(product)
       return product;
   }
+  async getTotalPriceOfOrder(id_order: number): Promise<number> {
+    //verifico si la orden existe
+    const order = await this.getOrderById(id_order);
+    if (!order) {
+      throw new NotFoundException('No se encontro la orden');
+    }
+    let totalPrice = 0;
+    // Suma los precios de los productos en la orden
+    if (order.products && order.products.length > 0) {
+      totalPrice = order.products.reduce((accumulator, product) => {
+        return accumulator + product.price;
+      }, 0);
+    }
+  
+    return totalPrice;
+  }
 
-
-  // Implement other methods like removeProductFromOrder, updateProductQuantity, etc.
+  async getProductCountInOrder(orderId: number): Promise<number> {
+    const order = await this.getOrderById(orderId);
+    if (!order) {
+      throw new NotFoundException('No se encontro la orden');
+    }
+    let productCount = 0;
+    // Contar la cantidad de productos en la orden
+    if (order.products && order.products.length > 0) {
+      productCount = order.products.length;
+    }
+  
+    return productCount;
+  }
 }
