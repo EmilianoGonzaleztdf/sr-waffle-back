@@ -123,4 +123,31 @@ export class OrderService {
   
     return productCount;
   }
+  async findAllOrdersForTodayWithProductTotals(): Promise<any[]> {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+  
+    const orders = await this.orderRepository.find({
+      where: {
+        date: Between(today, tomorrow),
+      },
+      relations: ['products'],
+    });
+    // Obtengo el total de productos y el precio total para cada orden
+    const ordersWithTotals = orders.map(order => {
+      let totalProducts = 0;
+      let totalPrice = 0;
+      if (order.products && order.products.length > 0) {
+        totalProducts = order.products.length;
+        totalPrice = order.products.reduce((accumulator, product) => {
+          return accumulator + product.price;
+        }, 0);
+      }
+      return { id_order: order.id_order, total_products: totalProducts, total_price: totalPrice };
+    });
+  
+    return ordersWithTotals;
+  }
 };
