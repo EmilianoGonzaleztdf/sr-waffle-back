@@ -126,6 +126,7 @@ export class OrderService {
   async findAllOrdersForTodayWithProductTotals(): Promise<any[]> {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+  
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
   
@@ -133,21 +134,30 @@ export class OrderService {
       where: {
         date: Between(today, tomorrow),
       },
-      relations: ['products'],
+      relations: ['products', 'status'], // Asegúrate de tener la relación 'status' correctamente definida en tu modelo de Order
     });
-    // Obtengo el total de productos y el precio total para cada orden
-    const ordersWithTotals = orders.map(order => {
+  
+    // Obtener el total de productos, el precio total y el estado para cada orden
+    const ordersWithTotalsAndStatus = orders.map(order => {
       let totalProducts = 0;
       let totalPrice = 0;
+      let orderStatus = null;
+  
       if (order.products && order.products.length > 0) {
         totalProducts = order.products.length;
         totalPrice = order.products.reduce((accumulator, product) => {
           return accumulator + product.price;
         }, 0);
       }
-      return { id_order: order.id_order, total_products: totalProducts, total_price: totalPrice };
+  
+      if (order.status) {
+        orderStatus = order.status; // Asumiendo que 'status' es un campo directo en la entidad Order
+      }
+  
+      return { id_order: order.id_order, total_products: totalProducts, total_price: totalPrice, status: orderStatus };
     });
   
-    return ordersWithTotals;
+    return ordersWithTotalsAndStatus;
   }
+  
 };
