@@ -18,14 +18,15 @@ export class OrderService {
 
   async findAll(): Promise<Order[]> {
     return await this.orderRepository.find();
-  }
+  };
   
   async findAllOrdersWithRelations(): Promise<Order[]> {
     const orders = await this.orderRepository.find({
       relations: ['status', 'sale', 'products',],
     });
     return orders;
-  }
+  };
+
   async findAllOrdersForTodayWithRelations(): Promise<Order[]> {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -40,7 +41,7 @@ export class OrderService {
       relations: ['status', 'sale', 'products'],
     });
     return orders;
-  }
+  };
 
   async createOrder(): Promise<Order> {
     const order = this.orderRepository.create();
@@ -61,11 +62,8 @@ export class OrderService {
       throw new NotFoundException(`Order with ID ${id_order} not found`);
     }
     return order;
-  }
+  };
 
-  async getOrderByIdQuantity(id_order: number){
-    const order = this.getOrderById(id_order);
-  }
   async addProductToOrder(id_order: number, id_product: number): Promise<Order> {
     // Busco la orden a la que deseo cargar productos
     let order = await this.getOrderById(id_order);
@@ -84,7 +82,7 @@ export class OrderService {
     // Guardar la orden actualizada
     const updatedOrder = await this.orderRepository.save(order);
     return updatedOrder;
-  }
+  };
   
   async buscaProducto (id_product : number): Promise<any>{
   const criteriaProduct: FindOneOptions = { where: { id_product: id_product } };
@@ -94,7 +92,7 @@ export class OrderService {
       }
       console.log(product)
       return product;
-  }
+  };
   
   async getTotalPriceOfOrder(id_order: number): Promise<number> {
     //verifico si la orden existe
@@ -110,7 +108,7 @@ export class OrderService {
       }, 0);
     }
     return totalPrice;
-  }
+  };
 
   async getProductCountInOrder(orderId: number): Promise<number> {
     const order = await this.getOrderById(orderId);
@@ -125,4 +123,4 @@ export class OrderService {
   
     return productCount;
   }
-}
+};
