@@ -27,6 +27,10 @@ export class OrderController {
     return await this.orderService.createOrder();
   }
   // busco ordenes por id
+  @Get('/getOrderByIdRelations/:id_order')
+  async getOrderByIdRelations(@Param('id_order') id_order: number) {
+    return await this.orderService.getOrderByIdRelations(id_order);
+  }
   @Get('/findByID/:id_order')
   async getOrderById(@Param('id_order') id_order: number) {
     return await this.orderService.getOrderById(id_order);
