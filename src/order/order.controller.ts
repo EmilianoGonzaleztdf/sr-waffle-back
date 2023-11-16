@@ -53,4 +53,8 @@ export class OrderController {
       const productCount = await this.orderService.getProductCountInOrder(id_order);
       return productCount;
   }
+  @Get('today-with-product-totals')
+  async getAllOrdersForTodayWithProductTotals(): Promise<any[]> {
+    return await this.orderService.findAllOrdersForTodayWithProductTotals();
+  }
 }

@@ -123,4 +123,41 @@ export class OrderService {
   
     return productCount;
   }
+  async findAllOrdersForTodayWithProductTotals(): Promise<any[]> {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+  
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+  
+    const orders = await this.orderRepository.find({
+      where: {
+        date: Between(today, tomorrow),
+      },
+      relations: ['products', 'status'], // Asegúrate de tener la relación 'status' correctamente definida en tu modelo de Order
+    });
+  
+    // Obtener el total de productos, el precio total y el estado para cada orden
+    const ordersWithTotalsAndStatus = orders.map(order => {
+      let totalProducts = 0;
+      let totalPrice = 0;
+      let orderStatus = null;
+  
+      if (order.products && order.products.length > 0) {
+        totalProducts = order.products.length;
+        totalPrice = order.products.reduce((accumulator, product) => {
+          return accumulator + product.price;
+        }, 0);
+      }
+  
+      if (order.status) {
+        orderStatus = order.status; // Asumiendo que 'status' es un campo directo en la entidad Order
+      }
+  
+      return { id_order: order.id_order, total_products: totalProducts, total_price: totalPrice, status: orderStatus };
+    });
+  
+    return ordersWithTotalsAndStatus;
+  }
+  
 };
