@@ -25,6 +25,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^10.0.0",
+    "axios": "^1.6.2",
     "fs": "^0.0.1-security",
     "mysql2": "^3.6.2",
     "pdfkit": "^0.13.0",
