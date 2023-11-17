@@ -15,6 +15,7 @@ import {
 
 @Entity({ name: 'product' })
 export class Product {
+  
   @PrimaryGeneratedColumn()
   id_product: number;
 

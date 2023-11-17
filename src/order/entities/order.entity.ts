@@ -18,13 +18,14 @@ export class Order {
   id_order: number;
 
   @Column()
-  date: String;
+  date: string;
 
   @ManyToOne(() => Status, (status) => status.orders)
   @JoinColumn({ name: 'fk_id_status' })
   status: Status;
 
   @ManyToMany(() => Product, (product) => product.orders)
+  @JoinColumn({ name: 'fk_id_products' })
   products: Product[];
 
   @OneToOne(()=>Sale, sale=>sale.order)

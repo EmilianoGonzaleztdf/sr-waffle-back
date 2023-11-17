@@ -31,13 +31,12 @@ export class OrderService {
   };
   // --buscador de ordenes--
   async getOrderById(id_order: number): Promise<Order> {
-    const criteriaOrder: FindOneOptions = { where: { id_order: id_order } };
-    const order: Order = await this.orderRepository.findOne(criteriaOrder);
-    if (!order) {
-      throw new Error('No se pudo encontrar la orden');
-    };
-    return order;
-  };
+    return await this.orderRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.products', 'products')
+      .where('order.id_order = :id', { id: id_order })
+      .getOne();
+  }
   // --buscador de producto--
   async getProductById(id_product: number): Promise<Product> {
     const criteriaProduct: FindOneOptions = {
@@ -93,7 +92,7 @@ export class OrderService {
 
     const orders = await this.orderRepository.find({
       where: {
-        date: Between(today, tomorrow),
+        //date: Between(today, tomorrow),
       },
       relations: ['status', 'sale', 'products'],
     });
@@ -107,31 +106,32 @@ export class OrderService {
       throw new Error('no se pudo encontrar el estado');
     }
       const date1 = await this.getDateTime(); // Esperar el resultado de getDateTime()
-      console.log('Fecha obtenida:', date1);
       order.date = date1;
       order.status = status;
+      order.products = [];
       return await this.orderRepository.save(order);
   }
 
   async addProductToOrder(id_order: number,id_product: number,): Promise<Order> {
     // Busco la orden a la que deseo cargar productos
-    let order = await this.getOrderById(id_order);
+    const order = await this.getOrderById(id_order);
     if (!order) {
       throw new Error('No se encontró la orden');
     }
     // Verifico si el producto que quiero agregar existe
-    let product = await this.getProductById(id_product);
+    const product = await this.getProductById(id_product);
     if (!product) {
       throw new Error('No se pudo encontrar el producto');
     } else {
           // Agregar el producto al arreglo de productos de la orde
-      order.products.push(product); // guardo el producto
+      order.products.push(product);// guardo el producto
     }
     // Guardar la orden actualizada
     const updatedOrder = await this.orderRepository.save(order);
     return updatedOrder;
   }
-
+  
+  
   async getTotalPriceOfOrder(id_order: number): Promise<number> {
     //verifico si la orden existe
     const order = await this.getOrderById(id_order);
@@ -170,7 +170,7 @@ export class OrderService {
 
     const orders = await this.orderRepository.find({
       where: {
-        date: Between(today, tomorrow),
+       // date: Between(today, tomorrow),
       },
       relations: ['products', 'status'],
     });
