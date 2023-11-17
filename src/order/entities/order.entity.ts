@@ -2,6 +2,7 @@ import { Product } from 'src/product/entities/product.entity';
 import { Sale } from 'src/sale/entities/sale.entity';
 import { Status } from 'src/status/entities/status.entity';
 import {
+  Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
@@ -16,8 +17,8 @@ export class Order {
   @PrimaryGeneratedColumn()
   id_order: number;
 
-  @CreateDateColumn()
-  date: Date;
+  @Column()
+  date: String;
 
   @ManyToOne(() => Status, (status) => status.orders)
   @JoinColumn({ name: 'fk_id_status' })
