@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Order } from './entities/order.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, FindOneOptions, Repository } from 'typeorm';
+import {  FindOneOptions, Repository } from 'typeorm';
 import { Product } from 'src/product/entities/product.entity';
 import { Status } from 'src/status/entities/status.entity';
 import axios from 'axios';
@@ -16,8 +16,8 @@ export class OrderService {
     @InjectRepository(Status)
     private readonly statusRepository: Repository<Status>,
   ) {}
-  // metodos que voy a reutilizar - NO CAMBIAR SE ROMPE TODO
-
+  // ###### !!!!!! metodos que voy a reutilizar - NO CAMBIAR SE ROMPE TODO!!!!!!
+  //=============== utilizados en endpoints basicos
   // --buscador de ordenes--
   async getOrderByIdRelations(id_order: number): Promise<Order> {
     const order = await this.orderRepository.findOne({
@@ -26,9 +26,9 @@ export class OrderService {
     });
     if (!order) {
       throw new NotFoundException(`Order with ID ${id_order} not found`);
-    };
+    }
     return order;
-  };
+  }
   // --buscador de ordenes--
   async getOrderById(id_order: number): Promise<Order> {
     return await this.orderRepository
@@ -38,7 +38,7 @@ export class OrderService {
       .getOne();
   }
   // --buscador de producto--
-  async getProductById(id_product: number): Promise<Product> {
+  private async getProductById(id_product: number): Promise<Product> {
     const criteriaProduct: FindOneOptions = {
       where: { id_product: id_product },
     };
@@ -47,19 +47,20 @@ export class OrderService {
     );
     if (!product) {
       throw new Error('No se pudo encontrar el producto');
-    };
+    }
     return product;
-  };
+  }
   // --buscador de status--
-  async getStatusById(id_status: string): Promise<Status> {
+  private async getStatusById(id_status: string): Promise<Status> {
     const criteriaStatus: FindOneOptions = { where: { id_status: id_status } };
     const status: Status = await this.statusRepository.findOne(criteriaStatus);
     if (!status) {
       throw new Error('No se pudo encontrar el status');
-    };
+    }
     return status;
-  };
-  async getDateTime(): Promise<string> {
+  }
+  //-- obtengo la fecha sin hora en string
+  private async getDateTime(): Promise<string> {
     const response = await axios.get(
       'http://worldtimeapi.org/api/timezone/America/Argentina/Ushuaia',
     );
@@ -67,37 +68,9 @@ export class OrderService {
     // Extraer solo la parte de la fecha
     const datePartOnly: string = datetime.split('T')[0];
     return datePartOnly;
-  };
-
+  }
   //---------------------------------------------------------------//
-  // metodo que no voy a usar never
-  async findAll(): Promise<Order[]> {
-    return await this.orderRepository.find();
-  };
-  //---------------------------------------------------------------//
-  // metodos customs
-  async findAllOrdersWithRelations(): Promise<Order[]> {
-    const orders = await this.orderRepository.find({
-      relations: ['status', 'sale', 'products'],
-    });
-    return orders;
-  };
-
-  async findAllOrdersForTodayWithRelations(): Promise<Order[]> {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-
-    const orders = await this.orderRepository.find({
-      where: {
-        //date: Between(today, tomorrow),
-      },
-      relations: ['status', 'sale', 'products'],
-    });
-    return orders;
-  };
+  //=============== endpoints de update create
 
   async createOrder(): Promise<Order> {
     const order = this.orderRepository.create();
@@ -105,14 +78,17 @@ export class OrderService {
     if (!status) {
       throw new Error('no se pudo encontrar el estado');
     }
-      const date1 = await this.getDateTime(); // Esperar el resultado de getDateTime()
-      order.date = date1;
-      order.status = status;
-      order.products = [];
-      return await this.orderRepository.save(order);
+    const date1 = await this.getDateTime(); // Esperar el resultado de getDateTime()
+    order.date = date1;
+    order.status = status;
+    order.products = [];
+    return await this.orderRepository.save(order);
   }
 
-  async addProductToOrder(id_order: number,id_product: number,): Promise<Order> {
+  async addProductToOrder(
+    id_order: number,
+    id_product: number,
+  ): Promise<Order> {
     // Busco la orden a la que deseo cargar productos
     const order = await this.getOrderById(id_order);
     if (!order) {
@@ -123,15 +99,55 @@ export class OrderService {
     if (!product) {
       throw new Error('No se pudo encontrar el producto');
     } else {
-          // Agregar el producto al arreglo de productos de la orde
-      order.products.push(product);// guardo el producto
+      // Agregar el producto al arreglo de productos de la orde
+      order.products.push(product); // guardo el producto
     }
     // Guardar la orden actualizada
     const updatedOrder = await this.orderRepository.save(order);
     return updatedOrder;
   }
-  
-  
+
+  async changeOrderStatus(id_order: number, id_status: string): Promise<any> {
+    //verifico si la orden existe
+    const order = await this.getOrderById(id_order);
+    if (!order) {
+      throw new NotFoundException('No se encontro la orden');
+    }
+    const status = await this.getStatusById(id_status);
+    if (!status) {
+      throw new Error('No se pudo encontrar el status');
+    }
+    // modifico el status de la orden
+    order.status = status;
+    await this.orderRepository.save(order);
+
+    return order;
+  }
+
+  //---------------------------------------------------------------//
+  // metodo que no voy a usar never
+  async findAll(): Promise<Order[]> {
+    return await this.orderRepository.find();
+  }
+  //---------------------------------------------------------------//
+  //=============== endpoints de estadisticas o datos para el front
+  //=============== metodos customs
+  async findAllOrdersWithRelations(): Promise<Order[]> {
+    const orders = await this.orderRepository.find({
+      relations: ['status', 'sale', 'products'],
+    });
+    return orders;
+  }
+
+  async findAllOrdersForTodayWithRelations(): Promise<Order[]> {
+    const today = await this.getDateTime();
+    const orders = await this.orderRepository.find({
+      where: { date: today },
+      relations: ['status', 'sale', 'products'],
+    });
+    return orders;
+  }
+
   async getTotalPriceOfOrder(id_order: number): Promise<number> {
     //verifico si la orden existe
     const order = await this.getOrderById(id_order);
@@ -158,20 +174,13 @@ export class OrderService {
     if (order.products && order.products.length > 0) {
       productCount = order.products.length;
     }
-
     return productCount;
   }
   async findAllOrdersForTodayWithProductTotals(): Promise<any[]> {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+    const today = await this.getDateTime();
 
     const orders = await this.orderRepository.find({
-      where: {
-       // date: Between(today, tomorrow),
-      },
+      where: { date: today },
       relations: ['products', 'status'],
     });
     // Obtengo el total de productos, el precio total y el estado para cada orden
@@ -198,20 +207,4 @@ export class OrderService {
     });
     return ordersWithTotalsAndStatus;
   }
-  async changeOrderStatus(id_order: number, id_status: string): Promise<any> {
-    //verifico si la orden existe
-    const order = await this.getOrderById(id_order);
-    if (!order) {
-      throw new NotFoundException('No se encontro la orden');
-    }
-    const status = await this.getStatusById(id_status);
-    if (!status) {
-      throw new Error('No se pudo encontrar el status');
-    }
-    // modifico el status de la orden
-    order.status = status;
-    await this.orderRepository.save(order);
-
-    return order;
-  }
-};
+}
