@@ -12,8 +12,6 @@ export class HistorySale {
     @Column()
     price_of_date_of_sale : number;
 
-    @Column()
-    date: string;
     // RELACIONES
 
     @ManyToOne(()=>Sale, sale=>sale.historySale)
