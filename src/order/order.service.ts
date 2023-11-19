@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Order } from './entities/order.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import {  FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { Product } from 'src/product/entities/product.entity';
 import { Status } from 'src/status/entities/status.entity';
 import axios from 'axios';
@@ -25,7 +25,7 @@ export class OrderService {
       relations: ['status', 'sale', 'products'], //consulta custom
     });
     if (!order) {
-      throw new NotFoundException(`Order with ID ${id_order} not found`);
+      throw new NotFoundException(`orden: ${id_order} not found`);
     }
     return order;
   }
@@ -46,7 +46,7 @@ export class OrderService {
       criteriaProduct,
     );
     if (!product) {
-      throw new Error('No se pudo encontrar el producto');
+      throw new Error(`product: ${id_product} not found`);
     }
     return product;
   }
@@ -55,7 +55,7 @@ export class OrderService {
     const criteriaStatus: FindOneOptions = { where: { id_status: id_status } };
     const status: Status = await this.statusRepository.findOne(criteriaStatus);
     if (!status) {
-      throw new Error('No se pudo encontrar el status');
+      throw new Error(`status: ${id_status} not found`);
     }
     return status;
   }
@@ -75,52 +75,30 @@ export class OrderService {
   async createOrder(): Promise<Order> {
     const order = this.orderRepository.create();
     let status = await this.getStatusById('1');
-    if (!status) {
-      throw new Error('no se pudo encontrar el estado');
-    }
-    const date1 = await this.getDateTime(); // Esperar el resultado de getDateTime()
+
+    const date1 = await this.getDateTime(); // Espera el resultado de getDateTime()
     order.date = date1;
     order.status = status;
     order.products = [];
     return await this.orderRepository.save(order);
   }
 
-  async addProductToOrder(
-    id_order: number,
-    id_product: number,
-  ): Promise<Order> {
-    // Busco la orden a la que deseo cargar productos
+  async addProductToOrder(id_order: number,id_product: number,): Promise<Order> {
     const order = await this.getOrderById(id_order);
-    if (!order) {
-      throw new Error('No se encontró la orden');
-    }
-    // Verifico si el producto que quiero agregar existe
     const product = await this.getProductById(id_product);
-    if (!product) {
-      throw new Error('No se pudo encontrar el producto');
-    } else {
-      // Agregar el producto al arreglo de productos de la orde
-      order.products.push(product); // guardo el producto
-    }
+    // Agregar el producto al arreglo de productos de la orden
+    order.products.push(product); // guardo el producto
     // Guardar la orden actualizada
     const updatedOrder = await this.orderRepository.save(order);
     return updatedOrder;
   }
 
   async changeOrderStatus(id_order: number, id_status: string): Promise<any> {
-    //verifico si la orden existe
     const order = await this.getOrderById(id_order);
-    if (!order) {
-      throw new NotFoundException('No se encontro la orden');
-    }
     const status = await this.getStatusById(id_status);
-    if (!status) {
-      throw new Error('No se pudo encontrar el status');
-    }
     // modifico el status de la orden
     order.status = status;
     await this.orderRepository.save(order);
-
     return order;
   }
 
@@ -149,11 +127,7 @@ export class OrderService {
   }
 
   async getTotalPriceOfOrder(id_order: number): Promise<number> {
-    //verifico si la orden existe
     const order = await this.getOrderById(id_order);
-    if (!order) {
-      throw new NotFoundException('No se encontro la orden');
-    }
     let totalPrice = 0;
     // Suma los precios de los productos en la orden
     if (order.products && order.products.length > 0) {
@@ -166,9 +140,6 @@ export class OrderService {
 
   async getProductCountInOrder(orderId: number): Promise<number> {
     const order = await this.getOrderById(orderId);
-    if (!order) {
-      throw new NotFoundException('No se encontro la orden');
-    }
     let productCount = 0;
     // Contar la cantidad de productos en la orden
     if (order.products && order.products.length > 0) {
@@ -176,9 +147,9 @@ export class OrderService {
     }
     return productCount;
   }
+
   async findAllOrdersForTodayWithProductTotals(): Promise<any[]> {
     const today = await this.getDateTime();
-
     const orders = await this.orderRepository.find({
       where: { date: today },
       relations: ['products', 'status'],
@@ -196,7 +167,7 @@ export class OrderService {
         }, 0);
       }
       if (order.status) {
-        orderStatus = order.status; // Asumiendo que 'status' es un campo directo en la entidad Order
+        orderStatus = order.status;
       }
       return {
         id_order: order.id_order,
@@ -207,4 +178,5 @@ export class OrderService {
     });
     return ordersWithTotalsAndStatus;
   }
+  
 }
