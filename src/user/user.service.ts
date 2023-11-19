@@ -4,7 +4,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { FindOneOptions, Repository } from 'typeorm';
-import { Person } from 'src/person/entities/person.entity';
 import { Role } from 'src/role/entities/role.entity';
 
 @Injectable()
@@ -13,8 +12,6 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @InjectRepository(Person)
-    private readonly personRepository: Repository<Person>,
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>
   ){}
@@ -87,5 +84,8 @@ export class UserService {
       .innerJoinAndSelect('user.person', 'person')
       .getMany();
     return result;
+  }
+  async findOneByEmail(email:string){
+    return await this.userRepository.findOneBy({email})
   }
 }
