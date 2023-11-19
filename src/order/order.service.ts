@@ -25,7 +25,7 @@ export class OrderService {
       relations: ['status', 'sale', 'products'], //consulta custom
     });
     if (!order) {
-      throw new NotFoundException(`orden: ${id_order} not found`);
+      throw new Error(`orden: ${id_order} not found`);
     }
     return order;
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateSaleDto } from './dto/create-sale.dto';
 import { UpdateSaleDto } from './dto/update-sale.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +6,7 @@ import { Sale } from './entities/sale.entity';
 import { FindOneOptions, Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Order } from 'src/order/entities/order.entity';
+import axios from 'axios';
 
 @Injectable()
 export class SaleService {
@@ -18,76 +19,71 @@ export class SaleService {
     private readonly orderRepository: Repository<Order>,
   ) {}
 
+    // ###### !!!!!! metodos que voy a reutilizar - NO CAMBIAR SE ROMPE TODO!!!!!!
+  //=============== utilizados en endpoints basicos
+  // --buscador de usuario--
+  private async getUserById(id_user: number): Promise<User> {
+    const criteriaUser: FindOneOptions = {
+      where: { id_user: id_user },
+    };
+    const user: User = await this.userRepository.findOne(
+      criteriaUser,
+    );
+    if (!user) {
+      throw new Error(`user: ${id_user} not found`);
+    }
+    return user;
+  }
+  // --buscador de Order--
+  private async getOrderById(id_order: number): Promise<Order> {
+    const criteriaOrder: FindOneOptions = {
+      where: { id_order: id_order },
+    };
+    const order: Order = await this.orderRepository.findOne(
+      criteriaOrder,
+    );
+    if (!order) {
+      throw new Error(`order: ${id_order} not found`);
+    }
+    return order;
+  }
+
   async findAll(): Promise<CreateSaleDto[]> {
     return await this.saleRepository.find();
   }
-/*
-  async searchSlaeByKeyword(keyword: string): Promise<Sale[]> {
-    if (keyword === '') {
-      return this.saleRepository.find(); // Devuelve todos las ventas si la keyword está vacía
-    }
-    keyword = keyword.toLowerCase();
-    return this.saleRepository
-      .createQueryBuilder('sale')
-      .where(
-        'LOWER(product.name) LIKE :keyword OR LOWER(product.description) LIKE :keyword OR LOWER(product.bar_code) LIKE :keyword',
-        { keyword: `%${keyword}%` },
-      )
-      .getMany();
-  }
-  
-  async update(id: number, createProduct: CreateProductDto, category : number) {
-    const criteria: FindOneOptions = { where: { id_product: id } };
-    let product: Product = await this.productRepository.findOne(criteria);
-    if (!product) {
-      throw new Error('no se pudo encontrar el producto a modificar');
-    }
-    const criteriaCat: FindOneOptions = { where: { id_category: category } };
-    const categoria: Category = await this.categoryRepository.findOne(criteriaCat);
-    console.log(categoria);
-    if(!categoria) {
-      throw new Error('no se pudo encontrar la categoria a modificar');
-    } else {
-      product.setBar_Code(createProduct.bar_code);
-      product.setDescription(createProduct.description);
-      product.setImgURL(createProduct.imgURL);
-      product.setName(createProduct.name);
-      product.setPrice(createProduct.price);
-      product.setStatus(createProduct.status);
-      product.category = categoria;
-      product = await this.productRepository.save(product);
-      return 'se cambio el producto';
-    }
-  }
 
-  async remove(id: number) {
-    const criteria: FindOneOptions = { where: { id_product: id } };
-    let product: Product = await this.productRepository.findOne(criteria);
-    if (product) {
-      await this.productRepository.remove(product);
-      return true;
-    } else throw new Error('no se encontro el producto a eliminar');
-  }
-  */
-
-  async create(iduser: number, idorder: number): Promise<Sale> {
-    const criteriaUser: FindOneOptions = { where: { id_user: iduser } };
-    const user: User = await this.userRepository.findOne(criteriaUser);
-    if (!user) {
-      throw new Error('no se encontro el usuario que realizó la venta ');
+  async getSaleByIdRelations(id_sale: number): Promise<Sale> {
+    const sale = await this.saleRepository.findOne({
+      where: { id_sale: id_sale },
+      relations: ['order',], //consulta custom
+    });
+    if (!sale) {
+      throw new Error (`sale: ${id_sale} not found`);
     }
-    const criteriaOrder: FindOneOptions = { where: { id_order: idorder } };
-    const order: Order= await this.orderRepository.findOne(criteriaOrder);
-    if (!order) {
-      throw new Error('no se encontro la orden de la venta ');
-    } else {
-      //const { bar_code, name, description, imgURL, price} = createSaleDto;
+    return sale;
+  }
+  //=============== endpoints de update create
+  // --crea la venta--
+  async createSale(id_user: number, id_order: number): Promise<Sale> {
+    const user = await this.getUserById(id_user);
+    const order = await this.getOrderById(id_order);
       const newSale = new Sale();
       newSale.user = user;
-      const newOrder = new Order();
       newSale.order = order;
       const savedSale = await this.saleRepository.save(newSale);
       return savedSale;
     }
+  
+  async updateOrderUserById (id_user: number, id_sale: number): Promise<any> {
+    const user = await this.getUserById(id_user);
+    const sale = await this.getSaleByIdRelations(id_sale);
+    sale.user = user;
+    await this.saleRepository.save(sale);
+    return sale;
   }
+
+
 }
+
+
+

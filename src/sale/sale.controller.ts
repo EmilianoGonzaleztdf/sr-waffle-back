@@ -7,34 +7,25 @@ import { Sale } from './entities/sale.entity';
 @Controller('sale')
 export class SaleController {
   constructor(private readonly saleService: SaleService) {}
-
+  // muestra todas las ventas
   @Get('/list')
   async findAll() : Promise<CreateSaleDto[]> {
     return this.saleService.findAll();
   }
-  /*
-  @Get('search/:keyword')
-  async searchSaleByKeyword(@Param('keyword') keyword : string) : Promise<CreateSaleDto[]>{
-    if(keyword === ''){
-      return this.saleService.findAll();
-    }
-    return this.saleService.searchSaleByKeyword(keyword);
-  } ;
-
-  
-  @Patch('/update/:id/:category')
-  async update (@Body() sale:sale, @Param('id') id : number,@Param('category') category : number) : Promise<String>{
-    return await this.saleService.update(id, product, category);
+  // muestra una venta por ID
+  @Get('/getSaleByIdRelations/:id_sale')
+  async getOrderByIdRelations(@Param('id_sale') id_sale: number) {
+    return await this.saleService.getSaleByIdRelations(id_sale);
+  }
+    // crea una venta (localhost:3001/sale/createSale/2/43) 2 es el del usuario y 45 el ID de la orden
+  @Post('/createSale/:id_user/:id_order')
+  async createSale(@Param('id_user') id_user : number, @Param('id_order') id_order : number) : Promise<Sale> {
+    return this.saleService.createSale(id_user, id_order);
+  }
+  // se cambia el usuario que realizo la venta (localhost:3001/sale/updateOrderUserById/2/6) 2 es la ID del usuario y 6 la ID de la venta
+  @Patch('/updateOrderUserById/:id_user/:id_order')
+  async updateOrderUserById(@Param('id_user') id_user : number, @Param('id_order') id_order : number) : Promise<any> {
+    return this.saleService.updateOrderUserById(id_user, id_order);
   }
 
-  @Delete('/delete/:id')
-  async remove (@Param('id') id : number) : Promise<boolean>{
-    return this.saleService.remove(id);
-  }
-  */
-
-  @Post('/createSale/:iduser/:idorder')
-  async create(@Param('iduser') iduser : number, @Param('idorder') idorder : number) : Promise<Sale> {
-    return this.saleService.create(iduser, idorder);
-  }
 }
