@@ -28,14 +28,14 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [    TypeOrmModule.forRoot({
-   /// config local
+   /*// config local
     type: 'mysql',
     host: 'localhost',
     port: 3306,
     username: 'root',
     password: 'emiliano1',
     database: 'tp_anual',
-    /*
+    */
    // config db online
     type: 'mysql',
     host: 'b1ycqaa9ezvmxmk0b3yt-mysql.services.clever-cloud.com',
@@ -43,7 +43,7 @@ import { AuthModule } from './auth/auth.module';
     username: 'uunm7jwef64aq6my',
     password: '4kQdqDhA8YmuDIG4DsVk',
     database: 'b1ycqaa9ezvmxmk0b3yt',
-    */
+    
     entities: [__dirname + '/**/**/**.entity{.ts,.js}'],
     synchronize: true, //modo desarrollador.
   }), CategoryModule, ProductModule, RoleModule, PersonModule, UserModule, OrderModule, StatusModule, SaleModule, HistorySaleModule, AuthModule,],
