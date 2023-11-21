@@ -16,7 +16,8 @@ import { HistorySaleModule } from './history_sale/history_sale.module';
 
 @Module({
   imports: [    TypeOrmModule.forRoot({
-   /// config local
+   /*
+   // config local
     type: 'mysql',
     host: 'localhost',
     port: 3306,
