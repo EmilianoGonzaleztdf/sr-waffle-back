@@ -27,11 +27,11 @@ import { HistorySaleModule } from './history_sale/history_sale.module';
     */
    // config db online
     type: 'mysql',
-    host: 'b1ycqaa9ezvmxmk0b3yt-mysql.services.clever-cloud.com',
+    host: 'sergioandressanchez.com.ar',
     port: 3306,
-    username: 'uunm7jwef64aq6my',
-    password: '4kQdqDhA8YmuDIG4DsVk',
-    database: 'b1ycqaa9ezvmxmk0b3yt',
+    username: 'chanchez_tp_anual',
+    password: 'bCT)tNSRmj#sg?cIqd',
+    database: 'chanchez_tp_anual',
     
     entities: [__dirname + '/**/**/**.entity{.ts,.js}'],
     synchronize: true, //modo desarrollador.

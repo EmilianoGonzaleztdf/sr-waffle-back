@@ -178,5 +178,5 @@ export class OrderService {
     });
     return ordersWithTotalsAndStatus;
   }
-  
+
 }
