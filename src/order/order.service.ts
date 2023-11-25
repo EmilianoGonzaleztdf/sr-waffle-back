@@ -29,6 +29,16 @@ export class OrderService {
     }
     return order;
   }
+  async getOrderByIdRelationProducts(id_order: number): Promise<Order> {
+    const order = await this.orderRepository.findOne({
+      where: { id_order: id_order },
+      relations: ['products'], //consulta custom
+    });
+    if (!order) {
+      throw new Error(`orden: ${id_order} not found`);
+    }
+    return order;
+  }
   // --buscador de ordenes--
   async getOrderById(id_order: number): Promise<Order> {
     return await this.orderRepository
