@@ -33,4 +33,8 @@ export class PersonController {
   async create(@Body() createPersonDto: CreatePersonDto, @Param('id') id : number) : Promise<Person> {
     return this.personService.create(createPersonDto, id);
   }
+  @Get('/findAllPersonsWithRelations')
+  async findAllPersonsWithRelations(): Promise<Person[]> {
+    return this.personService.findAllPersonsWithRelations();
+  }
 }
