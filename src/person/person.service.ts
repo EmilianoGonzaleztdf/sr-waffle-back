@@ -72,10 +72,4 @@ export class PersonService {
     return savedPerson;
     }
   }
-  async findAllPersonsWithRelations(): Promise<Person[]> {
-    const persons = await this.personRepository.find({
-      relations: ['user',],
-    });
-    return persons;
-  }
 }

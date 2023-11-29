@@ -79,4 +79,8 @@ export class OrderController {
   async getAllOrdersForTodayWithProductTotals(): Promise<any[]> {
     return await this.orderService.findAllOrdersForTodayWithProductTotals();
   }
+  @Get('/getTotalProductsSoldForToday')
+  async getTotalsForToday(): Promise<{ totalProducts: number; totalPrice: number }> {
+    return this.orderService.getTotalProductsSoldForToday();
+  }
 }

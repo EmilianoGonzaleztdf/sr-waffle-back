@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Order } from './entities/order.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, Not, Repository } from 'typeorm';
 import { Product } from 'src/product/entities/product.entity';
 import { Status } from 'src/status/entities/status.entity';
 import axios from 'axios';
@@ -118,7 +118,7 @@ export class OrderService {
     return await this.orderRepository.find();
   }
   //---------------------------------------------------------------//
-  //=============== endpoints de estadisticas o datos para el front
+  //=============== endpoints para usar en CLIENT
   //=============== metodos customs
   async findAllOrdersWithRelations(): Promise<Order[]> {
     const orders = await this.orderRepository.find({
@@ -188,5 +188,27 @@ export class OrderService {
     });
     return ordersWithTotalsAndStatus;
   }
+/////////////
+async getTotalProductsSoldForToday(): Promise<{ totalProducts: number; totalPrice: number; totalOrders: number }> {
+  const today = await this.getDateTime();
 
+  const orders = await this.orderRepository.find({
+    where: { 
+      date: today,
+    },
+    relations: ['products'],
+  });
+
+  let totalProducts = 0;
+  let totalPrice = 0;
+
+  orders.forEach((order) => {
+    if (order.products && order.products.length > 0) {
+      totalProducts += order.products.length;
+      totalPrice += order.products.reduce((accumulator, product) => accumulator + product.price, 0);
+    }
+  });
+  const totalOrders = orders.length;
+  return { totalProducts, totalPrice, totalOrders };
+}
 }
