@@ -11,7 +11,6 @@ export class StatusController {
   async findAll() : Promise<CreateStatusDto[]> {
     return this.statusService.findAll();
   }
-  
   @Get('search/:keyword')
   async searchProductsByKeyword(@Param('keyword') keyword : string) : Promise<CreateStatusDto[]>{
     if(keyword === ''){
@@ -19,12 +18,10 @@ export class StatusController {
     }
     return this.statusService.searchProductsByKeyword(keyword);
   } ;
-
   @Patch('/update/:id')
   async update (@Body() status:Status, @Param('id') id : number) : Promise<String>{
     return await this.statusService.update(id, status);
   }
-
   @Delete('/delete/:id')
   async remove (@Param('id') id : number) : Promise<boolean>{
     return this.statusService.remove(id);

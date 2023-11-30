@@ -17,7 +17,7 @@ export class CategoryService {
   async searchProductsByKeyword(keyword: string): Promise<Category[]> {
     let filter = 'LOWER(category.description) LIKE :keyword';
     if (keyword === '') {
-      return this.categoryRepository.find(); // Devuelve todos los productos si la keyword está vacía
+      return this.categoryRepository.find();
     }
     keyword = keyword.toLowerCase();
     return this.categoryRepository

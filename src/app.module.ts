@@ -16,16 +16,6 @@ import { HistorySaleModule } from './history_sale/history_sale.module';
 
 @Module({
   imports: [    TypeOrmModule.forRoot({
-   /*
-   // config local
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: 'emiliano1',
-    database: 'tp_anual',
-    */
-   // config db online
     type: 'mysql',
     host: 'sergioandressanchez.com.ar',
     port: 3306,

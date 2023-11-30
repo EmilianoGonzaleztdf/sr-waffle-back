@@ -21,7 +21,7 @@ export class PersonService {
 
   async searchPersonByKeyword(keyword: string): Promise<Person[]> {
     if (keyword === '') {
-      return this.personRepository.find(); // Devuelve todos las personas si la keyword está vacía
+      return this.personRepository.find();
     }
     keyword = keyword.toLowerCase();
     return this.personRepository

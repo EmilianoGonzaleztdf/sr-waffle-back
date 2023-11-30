@@ -3,7 +3,6 @@ import { Sale } from 'src/sale/entities/sale.entity';
 import { Status } from 'src/status/entities/status.entity';
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToMany,

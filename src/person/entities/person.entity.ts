@@ -3,7 +3,6 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "ty
 
 @Entity({name: 'person'})
 export class Person {
-    // ATRIBUTOS
     
     @PrimaryGeneratedColumn()
     id_person: number;
@@ -17,13 +16,9 @@ export class Person {
     @Column()
     lastname: string;
 
-    // RELACIONES
-
     @OneToOne(()=>User, user=>user.person)
     @JoinColumn({name : "fk_id_user"})
     user:User;
-
-    // CONSTRUCTOR
 
     constructor(dni: number, name: string, lastname: string){
         this.dni = dni;
@@ -31,7 +26,6 @@ export class Person {
         this.lastname = lastname;
     }
 
-    // GET
 
     public getId(): number {
         return this.id_person;
@@ -48,8 +42,6 @@ export class Person {
     public getLastname(): string {
         return this.lastname;
     }
-
-    // SET
 
     public setDni(dni: number) {
         this.dni = dni;

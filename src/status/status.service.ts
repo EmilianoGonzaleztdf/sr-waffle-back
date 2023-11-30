@@ -11,7 +11,6 @@ export class StatusService {
     @InjectRepository(Status)
     private readonly statusRepository: Repository<Status>
   ){}
-
   async findAll() : Promise<CreateStatusDto[]> {
     return await this.statusRepository.find();
   }
@@ -26,7 +25,6 @@ export class StatusService {
       .where(filter, { keyword: `%${keyword}%` })
       .getMany();
   }
-
   async update(id: number, createStatus: CreateStatusDto) {
     const criteria : FindOneOptions = { where : { id_status : id}};
     let status : Status = await this.statusRepository.findOne(criteria);
@@ -38,7 +36,6 @@ export class StatusService {
       return ('se cambio la descripcion del status');
     }
   }
-
   async remove(id: number) {
     const criteria: FindOneOptions = { where: { id_status: id } };
     let status : Status = await this.statusRepository.findOne(criteria);
@@ -47,7 +44,6 @@ export class StatusService {
         return true;
       } else throw new Error('no se encontro el status a eliminar');
   }
-
   async create(createStatusDto: CreateStatusDto): Promise<Status> {
     const {description} = createStatusDto;
     const newStatus = this.statusRepository.create({ description });

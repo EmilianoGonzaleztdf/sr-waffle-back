@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { FindOneOptions, Repository } from 'typeorm';
@@ -13,8 +12,6 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @InjectRepository(Person)
-    private readonly personRepository: Repository<Person>,
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>
   ){}
@@ -40,11 +37,11 @@ export class UserService {
   async searchUsersByKeyword(keyword: string): Promise<User[]> {
     let filter = 'LOWER(user.email) LIKE :keyword OR LOWER(user.user) LIKE :keyword OR LOWER(person.name) LIKE :keyword OR LOWER(person.lastname) LIKE :keyword OR LOWER(person.dni) LIKE :keyword OR LOWER(role.description) LIKE :keyword';
     if (keyword === '') {
-      return this.userRepository.find(); // Devuelve todos los usuarios si la keyword está vacía
+      return this.userRepository.find(); 
     }
     keyword = keyword.toLowerCase();
     return this.userRepository
-      .createQueryBuilder('user') // select from blabla
+      .createQueryBuilder('user')
       .leftJoin('user.person', 'person')
       .leftJoin('user.role', 'role')
       .where(filter, { keyword: `%${keyword}%` })

@@ -20,7 +20,7 @@ export class ProductService {
 
   async searchProductsByKeyword(keyword: string): Promise<Product[]> {
     if (keyword === '') {
-      return this.productRepository.find(); // Devuelve todos los productos si la keyword está vacía
+      return this.productRepository.find();
     }
     keyword = keyword.toLowerCase();
     return this.productRepository
@@ -31,7 +31,6 @@ export class ProductService {
       )
       .getMany();
   }
-
   async update(id: number, createProduct: CreateProductDto, category : number) {
     const criteria: FindOneOptions = { where: { id_product: id } };
     let product: Product = await this.productRepository.findOne(criteria);
@@ -55,7 +54,6 @@ export class ProductService {
       return 'se cambio el producto';
     }
   }
-
   async remove(id: number) {
     const criteria: FindOneOptions = { where: { id_product: id } };
     let product: Product = await this.productRepository.findOne(criteria);
@@ -64,7 +62,6 @@ export class ProductService {
       return true;
     } else throw new Error('no se encontro el producto a eliminar');
   }
-
   async create(createProductDto: CreateProductDto,id_category: number,): Promise<Product> {
     const criteriaCategory: FindOneOptions = { where: { id_category: id_category } };
     const category: Category = await this.categoryRepository.findOne(criteriaCategory);

@@ -29,6 +29,7 @@ export class PersonController {
   async remove (@Param('id') id : number) : Promise<boolean>{
     return this.personService.remove(id);
   }
+  
   @Post('/createPerson/:id')
   async create(@Body() createPersonDto: CreatePersonDto, @Param('id') id : number) : Promise<Person> {
     return this.personService.create(createPersonDto, id);

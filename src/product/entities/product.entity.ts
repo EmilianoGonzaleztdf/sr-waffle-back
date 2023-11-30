@@ -36,7 +36,7 @@ export class Product {
   @Column()
   status: boolean;
 
-  // relacion una categoria tiene muchos productos
+
   @ManyToOne(() => Category, (category) => category.products)
   @JoinColumn({ name: 'fk_id_category' })
   category: Category;
@@ -67,7 +67,6 @@ export class Product {
     this.status = true;
   }
 
-  // get
   public getId(): number {
     return this.id_product;
   }
@@ -89,7 +88,7 @@ export class Product {
   public getStatus(): boolean{
     return this.status;
   }
-  //set
+
   public setBar_Code(bar_Code: string) {
     this.bar_code = bar_Code;
   }

@@ -5,7 +5,6 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColu
 
 @Entity({name: 'user'})
 export class User {
-    // ATRIBUTOS
 
     @PrimaryGeneratedColumn()
     id_user: number;
@@ -22,9 +21,6 @@ export class User {
     @Column()
     status: string;
 
-
-    // RELACIONES
-
     @ManyToOne(()=>Role, role=>role.users)
     @JoinColumn({name : "fk_id_role"})
     role:Role;
@@ -35,15 +31,12 @@ export class User {
     @OneToMany(()=>Sale, sale=>sale.user)
     sales:Sale[];
 
-    // CONSTRUCTOR
     constructor(email : string, user : string, password : string, status : string) {
         this.email = email;
         this.user = user;
         this.password = password;
         this.status = status;
     }
-
-    // GET
 
     public getId(): number {
         return this.id_user;
@@ -64,8 +57,6 @@ export class User {
     public getStatus(): string {
         return this.status;
     }
-
-    // SET
 
     public setEmail(email: string) {
         this.email = email;

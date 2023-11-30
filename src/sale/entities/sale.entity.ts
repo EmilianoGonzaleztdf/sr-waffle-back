@@ -6,11 +6,8 @@ import { Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedCol
 @Entity({name: 'sale'})
 export class Sale {
 
-    // ATRIBUTOS
     @PrimaryGeneratedColumn()
     id_sale: number;
-
-    // RELACIONES
 
     @ManyToOne(()=>User, user=>user.sales)
     @JoinColumn({name : "fk_id_user"})
@@ -23,14 +20,9 @@ export class Sale {
     @JoinColumn({name : "fk_id_order"})
     order:Order;
 
-    // CONSTRUCTOR
     constructor(){}
-
-    // GET
 
     public getId(): number {
         return this.id_sale;
     }
-
-    // SET
 }
