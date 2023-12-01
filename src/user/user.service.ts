@@ -3,7 +3,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { FindOneOptions, Repository } from 'typeorm';
-import { Person } from 'src/person/entities/person.entity';
 import { Role } from 'src/role/entities/role.entity';
 
 @Injectable()
@@ -77,6 +76,7 @@ export class UserService {
         return true;
       } else throw new Error('no se encontro el usuario a eliminar');
   }
+
   async findAllUser(): Promise<any> {
     const result = await this.userRepository
       .createQueryBuilder('user') 
@@ -85,6 +85,7 @@ export class UserService {
       .getMany();
     return result;
   }
+
   async findOneByEmail(email:string){
     return await this.userRepository.findOneBy({email})
   }

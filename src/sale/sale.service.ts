@@ -30,6 +30,7 @@ export class SaleService {
     }
     return user;
   }
+
   private async getOrderById(id_order: number): Promise<Order> {
     const criteriaOrder: FindOneOptions = {
       where: { id_order: id_order },
@@ -42,6 +43,7 @@ export class SaleService {
     }
     return order;
   }
+
   async findAll(): Promise<CreateSaleDto[]> {
     return await this.saleRepository.find();
   }
@@ -55,6 +57,7 @@ export class SaleService {
     }
     return sale;
   }
+
   async createSale(id_user: number, id_order: number): Promise<Sale> {
     const user = await this.getUserById(id_user);
     const order = await this.getOrderById(id_order);
@@ -64,6 +67,7 @@ export class SaleService {
       const savedSale = await this.saleRepository.save(newSale);
       return savedSale;
     }
+    
   async updateOrderUserById (id_user: number, id_sale: number): Promise<any> {
     const user = await this.getUserById(id_user);
     const sale = await this.getSaleByIdRelations(id_sale);

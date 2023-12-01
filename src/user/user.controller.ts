@@ -11,10 +11,12 @@ export class UserController {
   async create(@Body() createUserDto: CreateUserDto , @Param('id') id : number) : Promise<User> {
     return await this.userService.create(createUserDto,id);
   }
+
   @Get('/list')
   async findAll() : Promise<CreateUserDto[]> {
     return await this.userService.findAll();
   }
+
   @Get('search/:keyword')
   async searchUsers(@Param('keyword') keyword: string) : Promise<CreateUserDto[]> {
     if (keyword === "") {
@@ -22,16 +24,20 @@ export class UserController {
     }
     return this.userService.searchUsersByKeyword(keyword);
   }
+
   @Patch('/update/:id/:role')
   async update(@Param('id', ParseIntPipe) id: number, @Body() createUserDto: CreateUserDto, @Param('role') role : number) : Promise<String> {
     return this.userService.update(id, createUserDto, role);
   }
+
   @Delete('/delete/:id')
   async remove(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.userService.remove(id);
   }
+
   @Get('/alluser')
   async findAllUsers(): Promise<any> {
     return this.userService.findAllUser();
   }
+  
 }
