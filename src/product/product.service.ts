@@ -82,4 +82,10 @@ export class ProductService {
       return savedProduct;
     }
   }
+  async findAllProductForWithRelations(): Promise<Product[]> {
+    const products = await this.productRepository.find({
+      relations: ['category'],
+    });
+    return products;
+  }
 }

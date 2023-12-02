@@ -30,4 +30,8 @@ export class ProductController {
   async create(@Body() createProductDto: CreateProductDto, @Param('id') id : number) : Promise<Product> {
     return this.productService.create(createProductDto, id);
   }
+  @Get('/findAllProductForWithRelations')
+  async findAllProductForWithRelations() : Promise<Product[]> {
+    return this.productService.findAllProductForWithRelations();
+  }
 }
