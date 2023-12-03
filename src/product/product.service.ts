@@ -15,7 +15,7 @@ export class ProductService {
   ) {}
 
   async findAll(): Promise<CreateProductDto[]> {
-    return await this.productRepository.find();
+    return this.productRepository.find({ where: { status: true } });
   }
 
   async searchProductsByKeyword(keyword: string): Promise<Product[]> {
@@ -87,5 +87,8 @@ export class ProductService {
       relations: ['category'],
     });
     return products;
+  }
+  async searchProductsActive(): Promise<Product[]> {
+      return this.productRepository.find({ where: { status: true } });
   }
 }
